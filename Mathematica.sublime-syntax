@@ -1,0 +1,144 @@
+%YAML 1.2
+---
+# https://www.sublimetext.com/docs/3/syntax.html
+name: Mathematica
+file_extensions: [m,wl,wls]
+first_line_match: ^#!.*\bmathematica\s*$
+scope: source.mathematica
+
+
+variables:
+  symb_op_ascii: "[-+*/\\\\=^:.<>~?&$%|;@']"
+
+  # The list of unicode symbols allowed as operators is fetched from the Julia parser https://github.com/JuliaLang/julia/blob/master/src/julia-parser.scm
+  # Err, this list is probably basically the same for Mathematica...
+  symb_op_unicode: '[≤≥¬←→↔↚↛↠↣↦↮⇎⇏⇒⇔⇴⇶⇷⇸⇹⇺⇻⇼⇽⇾⇿⟵⟶⟷⟷⟹⟺⟻⟼⟽⟾⟿⤀⤁⤂⤃⤄⤅⤆⤇⤌⤍⤎⤏⤐⤑⤔⤕⤖⤗⤘⤝⤞⤟⤠⥄⥅⥆⥇⥈⥊⥋⥎⥐⥒⥓⥖⥗⥚⥛⥞⥟⥢⥤⥦⥧⥨⥩⥪⥫⥬⥭⥰⧴⬱⬰⬲⬳⬴⬵⬶⬷⬸⬹⬺⬻⬼⬽⬾⬿⭀⭁⭂⭃⭄⭇⭈⭉⭊⭋⭌￩￫≡≠≢∈∉∋∌⊆⊈⊂⊄⊊∝∊∍∥∦∷∺∻∽∾≁≃≄≅≆≇≈≉≊≋≌≍≎≐≑≒≓≔≕≖≗≘≙≚≛≜≝≞≟≣≦≧≨≩≪≫≬≭≮≯≰≱≲≳≴≵≶≷≸≹≺≻≼≽≾≿⊀⊁⊃⊅⊇⊉⊋⊏⊐⊑⊒⊜⊩⊬⊮⊰⊱⊲⊳⊴⊵⊶⊷⋍⋐⋑⋕⋖⋗⋘⋙⋚⋛⋜⋝⋞⋟⋠⋡⋢⋣⋤⋥⋦⋧⋨⋩⋪⋫⋬⋭⋲⋳⋴⋵⋶⋷⋸⋹⋺⋻⋼⋽⋾⋿⟈⟉⟒⦷⧀⧁⧡⧣⧤⧥⩦⩧⩪⩫⩬⩭⩮⩯⩰⩱⩲⩳⩴⩵⩶⩷⩸⩹⩺⩻⩼⩽⩾⩿⪀⪁⪂⪃⪄⪅⪆⪇⪈⪉⪊⪋⪌⪍⪎⪏⪐⪑⪒⪓⪔⪕⪖⪗⪘⪙⪚⪛⪜⪝⪞⪟⪠⪡⪢⪣⪤⪥⪦⪧⪨⪩⪪⪫⪬⪭⪮⪯⪰⪱⪲⪳⪴⪵⪶⪷⪸⪹⪺⪻⪼⪽⪾⪿⫀⫁⫂⫃⫄⫅⫆⫇⫈⫉⫊⫋⫌⫍⫎⫏⫐⫑⫒⫓⫔⫕⫖⫗⫘⫙⫷⫸⫹⫺⊢⊣⊕⊖⊞⊟∪∨⊔±∓∔∸≂≏⊎⊻⊽⋎⋓⧺⧻⨈⨢⨣⨤⨥⨦⨧⨨⨩⨪⨫⨬⨭⨮⨹⨺⩁⩂⩅⩊⩌⩏⩐⩒⩔⩖⩗⩛⩝⩡⩢⩣÷⋅∘×∩∧⊗⊘⊙⊚⊛⊠⊡⊓∗∙∤⅋≀⊼⋄⋆⋇⋉⋊⋋⋌⋏⋒⟑⦸⦼⦾⦿⧶⧷⨇⨰⨱⨲⨳⨴⨵⨶⨷⨸⨻⨼⨽⩀⩃⩄⩋⩍⩎⩑⩓⩕⩘⩚⩜⩞⩟⩠⫛⊍▷⨝⟕⟖⟗↑↓⇵⟰⟱⤈⤉⤊⤋⤒⤓⥉⥌⥍⥏⥑⥔⥕⥘⥙⥜⥝⥠⥡⥣⥥⥮⥯￪￬]'
+  symb_op: '(?:{{symb_op_ascii}}|{{symb_op_unicode}})'
+
+  # Multi-character operators
+  long_op: (?:\+=|-=|\*=|/=|//=|\\\\=|^=|÷=|%=|<<=|>>=|>>>=|\|=|&=|:=|=>|$=|\|\||<:|>:|\|>|<\||//|\+\+)
+
+  # Symbols part of the language syntax
+  symb_lang: (?:[(){}\[\],.;:'"`@#])
+
+  # General identifier symbol
+  symb_id: (?:[^\s{{symb_lang}}{{symb_op}}])
+
+  # Helpers for function declaration
+  func_name: |-
+    (?x)
+    (?!!)                 # Lookbehind: Function name doesn't start with !
+    ([^\s{{symb_lang}}]+) # Function name
+    (?=\[)                # Lookahead: Beginning of parameters
+
+  func_params: \[([^\]])*\]\s*:=
+
+contexts:
+  main:
+    - include: declarations
+    - include: expressions
+
+  expressions:
+    - include: comments
+    - include: literals
+    - include: operators
+    - include: strings
+    # - include: keywords
+    # - include: macros
+    - include: function-call
+    - include: variable
+    - include: nested_parens
+    - include: nested_squarebrackets
+
+  declarations:
+  #   - include: decl-func
+    - include: decl-func-assignment-form
+  #   - include: decl-type
+  #   - include: decl-macro
+  #   - include: decl-typealias
+
+  comments:
+    - match: '\(\*'
+      push: comment-block
+
+  comment-block:
+    - meta_scope: comment.block
+    - match: '\(\*'
+      push: comment-block
+    - match: '\*\)'
+      pop: true
+
+  function-call:
+    - match: '({{symb_id}}+)(?=\[)'
+      captures:
+        # Highlight functions by default.
+        # The scope `variable.function` is applied last to give it precedence
+        # so that user can override the color in the color theme.
+        1: support.function variable.function
+
+  operators:
+    # - Bang is not only an operator symbol, it can also be
+    #   part of a function name, thus it is treated separately.
+    - match: ({{symb_op}}|!)
+      scope: keyword.operator
+
+  literals:
+    - match: \d*(\.\d*)?
+      scope: constant.numeric
+    - match: \b(True|False|Null|None)\b
+      scope: constant.language
+
+  variable:
+    - match: '{{symb_id}}+'
+      scope: variable.other
+    - match: '#\d*'
+      scope: variable.parameter
+
+  # Lookaheads to distinguish function call from function definition on assignment form.
+  decl-func-assignment-form:
+    - match: |-
+        (?x)
+        (?=
+          {{func_name}}
+          {{func_params}}
+        )
+      push: func-name
+
+  func-name:
+    - match: '{{func_name}}'
+      captures:
+        1: entity.name.function
+        2: support.type
+      set: function-parameters
+
+  function-parameters:
+    - meta_content_scope: meta.function.parameters
+    - match: \]
+      pop: true
+    - include: comments
+    - match: '{{symb_id}}+_{{symb_id}}*'
+      scope: variable.parameter
+
+  nested_parens:
+    - match: \(
+      push:
+        - match: \)
+          pop: true
+        - include: expressions
+
+  nested_squarebrackets:
+    - match: \[
+      push:
+        - match: \]
+          pop: true
+        - include: expressions
+
+  strings:
+    - match: '"'
+      push: string-content # Push to handle multi-line strings, ordinary match does not search beyond EOL.
+
+  string-content:
+    - meta_scope: string.quoted.double
+    - match: '\\"'
+    - match: '"'
+      pop: true
