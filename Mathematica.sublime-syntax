@@ -7,6 +7,9 @@ first_line_match: ^#!.*\bmathematica\s*$
 scope: source.mathematica
 
 
+# Partly based on https://github.com/JuliaEditorSupport/Julia-sublime/blob/master/Julia.sublime-syntax
+
+
 variables:
   symb_op_ascii: "[-+*/\\\\=^:.<>~?&$%|;@']"
 
@@ -71,10 +74,7 @@ contexts:
   function-call:
     - match: '({{symb_id}}+)(?=\[)'
       captures:
-        # Highlight functions by default.
-        # The scope `variable.function` is applied last to give it precedence
-        # so that user can override the color in the color theme.
-        1: support.function variable.function
+        1: variable.function
 
   operators:
     # - Bang is not only an operator symbol, it can also be
