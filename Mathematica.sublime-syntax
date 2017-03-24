@@ -1,6 +1,9 @@
 %YAML 1.2
 ---
+
 # https://www.sublimetext.com/docs/3/syntax.html
+# https://www.sublimetext.com/docs/3/scope_naming.html
+
 name: Mathematica
 file_extensions: [m,wl,wls]
 first_line_match: ^#!.*\bmathematica\s*$
