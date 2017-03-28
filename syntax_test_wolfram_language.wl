@@ -1,4 +1,4 @@
-(* SYNTAX TEST "Packages/Mathematica/Mathematica.sublime-syntax" *)
+(* SYNTAX TEST "Packages/WolframLanguage/WolframLanguage.sublime-syntax" *)
 
 (*
   For information on how this file is used, see
@@ -8,11 +8,11 @@
 
 (* NUMBERS *)
 
-  11
+   11
 (* ^^ constant.numeric *)
-  .11
+   .11
 (* ^^^ constant.numeric *)
-  11.
+   11.
 (* ^^^ constant.numeric *)
-  11.11
+   11.11
 (* ^^^^^ constant.numeric *)

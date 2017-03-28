@@ -5,7 +5,7 @@
   <key>name</key>
   <string>Comments</string>
   <key>scope</key>
-  <string>source.mathematica</string>
+  <string>source.wolfram</string>
   <key>settings</key>
   <dict>
     <key>shellVariables</key>

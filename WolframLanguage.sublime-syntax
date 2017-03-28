@@ -4,10 +4,10 @@
 # https://www.sublimetext.com/docs/3/syntax.html
 # https://www.sublimetext.com/docs/3/scope_naming.html
 
-name: Mathematica
-file_extensions: [m,wl,wls]
-first_line_match: ^#!.*\bmathematica\s*$
-scope: source.mathematica
+name: WolframLanguage
+file_extensions: [m,wl,wls,nb]
+first_line_match: ^#!.*\b(math|wolfram).*$
+scope: source.wolfram
 
 
 # Partly based on https://github.com/JuliaEditorSupport/Julia-sublime/blob/master/Julia.sublime-syntax
@@ -41,8 +41,15 @@ variables:
 
 contexts:
   main:
+    - include: shebang
     - include: declarations
     - include: expressions
+
+  shebang:
+    - match: ^(#!).*$\n?
+      scope: comment.line.shebang
+      captures:
+        1: punctuation.definition.comment
 
   expressions:
     - include: comments

@@ -4,7 +4,7 @@
   <key>name</key>
   <string>Symbol Index</string>
   <key>scope</key>
-  <string>source.mathematica entity.name</string>
+  <string>source.wolfram entity.name</string>
   <key>settings</key>
   <dict>
     <key>showInIndexedSymbolList</key>

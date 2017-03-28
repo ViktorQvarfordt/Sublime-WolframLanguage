@@ -1,6 +1,6 @@
-# Sublime-Mathematica
+# Sublime-WolframLanguage
 
-Sublime Text 3 support for Mathematica, the Wolfram Language.
+Sublime Text 3 support for the [Wolfram Language](https://en.wikipedia.org/wiki/Wolfram_Language), the language used in Mathematica.
 
 - Syntax highlighting.
 - Auto completion for built-in functions.
@@ -9,7 +9,7 @@ Sublime Text 3 support for Mathematica, the Wolfram Language.
 
 ## Installation
 
-If you haven't already, [install Package Control](https://packagecontrol.io/installation), then select `Mathematica` from the `Package Control: Install Package` dropdown list in the Command Palette.
+If you haven't already, [install Package Control](https://packagecontrol.io/installation), then select `WolframLanguage` from the `Package Control: Install Package` dropdown list in the Command Palette.
 
 
 ### Manual installation
