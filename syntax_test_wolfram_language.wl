@@ -16,3 +16,18 @@
 (* ^^^ constant.numeric *)
    11.11
 (* ^^^^^ constant.numeric *)
+
+
+  f[x]
+(*^ variable.function*)
+
+  f[x_] := 2x
+(*^ entity.name.function*)
+(*  ^^ variable.parameter*)
+(*      ^^ keyword.operator*)
+
+  f[x_, OptionsPattern[]] := 2x
+(*^ entity.name.function*)
+(*  ^^ variable.parameter*)
+(*      ^^^^^^^^^^^^^^ variable.function*)
+(*                        ^^ keyword.operator*)

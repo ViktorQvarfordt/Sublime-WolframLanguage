@@ -30,6 +30,9 @@ variables:
   # General identifier symbol
   symb_id: (?:[^\s{{symb_lang}}{{symb_op}}])
 
+  # Must be wrapped in () when used
+  nested_square: '\[(?>[^\[\]]+|\g<-1>)*\]'
+
   # Helpers for function declaration
   func_name: |-
     (?x)
@@ -37,7 +40,7 @@ variables:
     ([^\s{{symb_lang}}]+) # Function name
     (?=\[)                # Lookahead: Beginning of parameters
 
-  func_params: \[([^\]])*\]\s*:=
+  func_params: '({{nested_square}})\s*:='
 
 contexts:
   main:
@@ -115,7 +118,10 @@ contexts:
       push: func-name
 
   func-name:
-    - match: '{{func_name}}'
+    - match: |-
+        (?x)
+        {{func_name}}
+        \[
       captures:
         1: entity.name.function
         2: support.type
@@ -123,11 +129,17 @@ contexts:
 
   function-parameters:
     - meta_content_scope: meta.function.parameters
+    - match: '(?:,\s*)?({{symb_id}}+_{{symb_id}}*)'
+      captures:
+        1: variable.parameter
+    - include: comments
     - match: \]
       pop: true
-    - include: comments
-    - match: '{{symb_id}}+_{{symb_id}}*'
-      scope: variable.parameter
+    - match: '[^\]]'
+      set:
+        - match: (?=[,\]])
+          set: function-parameters
+        - include: expressions
 
   nested_parens:
     - match: \(
