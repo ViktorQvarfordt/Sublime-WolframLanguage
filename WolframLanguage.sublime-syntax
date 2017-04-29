@@ -149,6 +149,9 @@ contexts:
 
   string-content:
     - meta_scope: string.quoted.double
-    - match: '\\"'
+    - match: '\\\[.*?\]'
+      scope: constant.character.escape
+    - match: '\\.'
+      scope: constant.character.escape
     - match: '"'
       pop: true
