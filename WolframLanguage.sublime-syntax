@@ -61,6 +61,7 @@ contexts:
     - include: strings
     # - include: keywords
     # - include: macros
+    - include: part
     - include: function-call
     - include: variable
     - include: nested_parens
@@ -83,6 +84,10 @@ contexts:
       push: comment-block
     - match: '\*\)'
       pop: true
+
+  part:
+    - match: '({{symb_id}}+)(?=\[\[.*\]\])'
+      scope: variable.other
 
   function-call:
     - match: '({{symb_id}}+)(?=\[)'
@@ -129,6 +134,8 @@ contexts:
 
   function-parameters:
     - meta_content_scope: meta.function.parameters
+    - match: '"'
+      push: string-content
     - match: '(?:,\s*)?({{symb_id}}+_{{symb_id}}*)'
       captures:
         1: variable.parameter

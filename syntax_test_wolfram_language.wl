@@ -31,3 +31,14 @@
 (*  ^^ variable.parameter*)
 (*      ^^^^^^^^^^^^^^ variable.function*)
 (*                        ^^ keyword.operator*)
+
+
+
+
+  foo[[1]]
+
+  StringMatchQ[IgnoreCase -> Automatic, foo -> bar]
+
+  foo["bar",  baz_] :=
+
+
