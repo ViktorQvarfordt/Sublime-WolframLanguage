@@ -114,7 +114,7 @@ contexts:
           scope: keyword.operator.wolfram
         - match: \\[^()!*]
           scope: constant.character.escape.wolfram
-        - match: \`\w+\`
+        - match: (?<=[\s\"\`])\`\w*\`
           scope: constant.other.placeholder.wolfram
 
   shorthand:
