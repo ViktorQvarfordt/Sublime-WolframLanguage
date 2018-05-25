@@ -68,6 +68,18 @@
   =!=
 (*^^^ keyword.operator.comparison*)
 
+   @
+(* ^ keyword.operator *)
+   @@
+(* ^^ keyword.operator *)
+   @@@
+(* ^^^ keyword.operator *)
+   @*
+(* ^^ keyword.operator *)
+   /*
+(* ^^ keyword.operator *)
+   /@
+(* ^^ keyword.operator *)
    /;
 (* ^^ keyword.operator *)
    //
@@ -96,23 +108,52 @@
   my`context12`$foo
 (*^^^^ variable.other *)
 
-  f[x];
-(*^ variable.function *)
-(*. ^ variable.other *)
+  Plus
+(* ^ variable.function *)
+  System`Plus
+(*     ^^^ variable.function *)
 
   Image[Red, Interleaving -> True]
 (*^^^^^ variable.function *)
-(*      ^ variable.function *)
-(*           ^ variable.function *)
+(*      ^ constant.language *) (* seems wrong to me *)
+(*           ^ constant.language.wolfram *)
 (*                        ^^ keyword.operator *)
+
+(* PATTERNS *)
+
+  var_head  foo
+(*^^^^^^^^ meta.pattern.wolfram variable.parameter.wolfram  *)
+(*          ^ variable.other *)
+
+  var_head:foo
+(*^^^^^^^^ meta.pattern.wolfram variable.parameter.wolfram *)
+(*        ^ meta.pattern.wolfram keyword.operator.Optional.wolfram *)
+(*         ^^^ variable.other *)
+
+  var_head ? EvenQ
+(*^^^^^^^^ meta.pattern.wolfram variable.parameter.wolfram  *)
+(*         ^ meta.pattern.wolfram keyword.operator.PatternTest.wolfram *)
+(*           ^^^^^ variable.function *)
+
+  var: patt ? EvenQ : foo
+(*^^^ variable.parameter.wolfram *)
+(*   ^ keyword.operator.Pattern.wolfram *)
+(*      ^^^ meta.pattern.wolfram variable.other *)
+(*          ^ meta.pattern.wolfram keyword.operator.PatternTest.wolfram *)
+(*            ^^^^^ meta.pattern.wolfram variable.function *)
+(*                  ^ keyword.operator.Optional.wolfram *)
+(*                    ^^^ variable.other *)
 
 
 (* FUNCTIONS *)
 
   f[x_, y_] := 2x
 (*^ entity.name.function*)
-(*  ^ variable.parameter*)
+(* ^ meta.arguments.wolfram punctuation.section.brackets.begin.wolfram *)
+(*  ^^ meta.arguments.wolfram meta.pattern.wolfram variable.parameter.wolfram *)
+(*    ^^ meta.arguments.wolfram punctuation.separator.sequence.wolfram *)
 (*      ^ variable.parameter*)
+(*        ^ meta.arguments.wolfram punctuation.section.brackets.end.wolfram *)
 (*          ^^ keyword.operator*)
 
   f[x_, OptionsPattern[]] := 2x
@@ -128,7 +169,7 @@
 (*               ^^ keyword.operator*)
 
 
-  f[x: _] := 2x
+  f[x_, s_] := 2x
 (*^ entity.name.function*)
 (*  ^ variable.parameter*)
 
@@ -137,21 +178,40 @@
 (*^ entity.name.function*)
 (*  ^ variable.parameter*)
 
+|>
 
 (* STRINGS *)
 
   "This is a `string` (* this is not \a comment*)"
-(* ^ string.quoted.wolfram *)
+(* ^ string.quoted *)
 (*            ^ constant.other.placeholder *)
-(*                       ^ string.quoted.wolfram *)
+(*                       ^ string.quoted *)
 (*                                    ^ constant.character.escape *)
+
+  foo::bar = "message"
+(*   ^^ keyword.operator.MessageName *)
+(*     ^^^ string.unquoted *)
+(*             ^^ string.quoted *)
+
+
+(* COMMENTS *)
+
+(* simple comment *)
+(* ^ comment.block *)
+
 
 (* ASSERTION FREE *)
 
-  foo[[1]]
+  System`foo[[1]]
 
   StringMatchQ[IgnoreCase -> Automatic, foo -> bar]
 
-  foo["bar",  baz_] :=
+  foo["bar",  baz_Lisght] :=
 
 
+(* multiline (* also a comment *)
+  comment 
+  asd
+*)
+
+(* ::s:: *)
