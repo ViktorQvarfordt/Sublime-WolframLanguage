@@ -116,7 +116,7 @@
   Image[Red, Interleaving -> True]
 (*^^^^^ variable.function *)
 (*      ^ constant.language *) (* seems wrong to me *)
-(*           ^ constant.language.wolfram *)
+(*           ^^^^^^^^^^^^ variable.function.wolfram *)
 (*                        ^^ keyword.operator *)
 
 (* PATTERNS *)
@@ -178,7 +178,6 @@
 (*^ entity.name.function*)
 (*  ^ variable.parameter*)
 
-|>
 
 (* STRINGS *)
 
@@ -193,11 +192,42 @@
 (*     ^^^ string.unquoted *)
 (*             ^^ string.quoted *)
 
+  "this`is`a`context"
+(*^^^^^^^^^^^^^^^^^^^ meta.string.wolfram string.quoted.wolfram  *)
+
 
 (* COMMENTS *)
 
 (* simple comment *)
 (* ^ comment.block *)
+
+(* comment (*in a comment*) *)
+(* ^^^^^^^^ comment.block.wolfram *)
+(*         ^^^^^^^^^^^^^^^^ comment.block.wolfram comment.block.wolfram *)
+
+
+(* BRACKETS *)
+
+  <|   |>  foo
+(*^^ meta.associations.wolfram punctuation.section.associations.begin.wolfram  *)
+(*   ^ meta.associations.wolfram  *)
+(*     ^^ meta.associations.wolfram punctuation.section.associations.end.wolfram *)
+(*         ^^^ source.wolfram variable.other *)
+
+  [ ]
+(*^ meta.brackets.wolfram punctuation.section.brackets.begin.wolfram *)
+(* ^ meta.brackets.wolfram *)
+(*  ^ meta.brackets.wolfram punctuation.section.brackets.end.wolfram *)
+
+  { }
+(*^ meta.braces.wolfram punctuation.section.braces.begin.wolfram *)
+(* ^ meta.braces.wolfram *)
+(*  ^ meta.braces.wolfram punctuation.section.braces.end.wolfram *)
+
+  ( )
+(*^ meta.parens.wolfram punctuation.section.parens.begin.wolfram *)
+(* ^ meta.parens.wolfram *)
+(*  ^ meta.parens.wolfram punctuation.section.parens.end.wolfram *)
 
 
 (* ASSERTION FREE *)
