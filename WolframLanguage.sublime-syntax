@@ -109,16 +109,18 @@ contexts:
         2: variable.function.wolfram
 
   operators:
-    - match: (@[@*]?|/[@*])
+    - match: (@\*|@{1,3}|\/[@*])
       scope: keyword.operator.call.wolfram
-    - match: (//?\.)
+    - match: (\/\/?\.)
       scope: keyword.operator.replace.wolfram
-    - match: (==|!=|>=|<=|===|=!=)
+    - match: (===|=!=|==|!=|>=|<=|<|>)
       scope: keyword.operator.comparison.wolfram
     - match: (!|\|\||&&)
       scope: keyword.operator.logical.wolfram
-    - match: (:?=|[-:]>|[+\-*/]=|<->)
+    - match: (:?=|\/:|[-:]>|[+\-*/]=|<->)
       scope: keyword.operator.assignment.wolfram
+    - match: '\/;'
+      scope: keyword.operator.condition.wolfram
     - match: (\+\+|--|[+\-*/])
       scope: keyword.operator.arithmetic.wolfram
     - match: (>>>?|<<<?)
@@ -127,6 +129,8 @@ contexts:
       scope: keyword.operator.string.wolfram
     - match: \.\.\.?
       scope: keyword.operator.repeat.wolfram
+    - match: ':'
+      scope: keyword.operator.pattern.wolfram
     - match: \\\[[[:alnum:]]+\]
       scope: keyword.operator.word.wolfram
     - match: '&'
