@@ -179,7 +179,7 @@ contexts:
           scope: punctuation.section.brackets.end.wolfram
           pop: true
         - include: expressions
-    - match: ({{identifier}})(?=\s*@@|/@|@\*|/\*|@)
+    - match: ({{identifier}})(?=\s*(@\*|@{1,3}|\/[@*]))
       scope: variable.function.wolfram
 
   variable:
