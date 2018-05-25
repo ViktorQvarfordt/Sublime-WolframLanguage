@@ -58,6 +58,17 @@ contexts:
     - include: shorthand
     - include: operators
     - include: pattern
+    - include: pattern-short
+    - include: function
+    - include: variable
+    - include: nested
+
+  expressions-nopattern:
+    - include: comments
+    - include: literals
+    - include: shorthand
+    - include: operators
+    - include: pattern-short
     - include: function
     - include: variable
     - include: nested
@@ -138,35 +149,47 @@ contexts:
       scope: keyword.operator.string.wolfram
     - match: \.\.\.?
       scope: keyword.operator.repeat.wolfram
-    - match: ':'
-      scope: keyword.operator.pattern.wolfram
     - match: \\\[[[:alnum:]]+\]
       scope: keyword.operator.word.wolfram
     - match: '&'
       scope: variable.function.wolfram
 
-  pattern:
+  pattern-short:
     # Including Blank, BlankSequence, BlankNullSequence
     # Can also be matched with Pattern, PatternTest, Optional
-    - match: ({{identifier}})?(_{1,3}({{identifier}})?)
-      captures:
-        1: variable.parameter.wolfram
-        3: support.class.wolfram
-      push: 
+    - match: ({{identifier}})?(_{1,3})(({{identifier}})?)\s*
+      scope: variable.parameter.wolfram
+      # captures:
+      #   1: variable.parameter.wolfram
+      #   3: support.class.wolfram
+      #   4: support.class.wolfram
+      push:
         - meta_scope: meta.pattern.wolfram
-        - match: (?=[^?:])
-          pop: true
         - match: \?
           scope: keyword.operator.PatternTest.wolfram
-          push: expressions
-        - match: ':'
+          pop: true
+        - match: ':(?!:)'
           scope: keyword.operator.Optional.wolfram
-          push: expressions
-    - match: ({{identifier}})(:(?!:))
+          pop: true
+        - match: (?![\s])
+          pop: true
+
+  pattern:
+    - match: '({{identifier}})\s*(:(?!:))'
       captures:
         1: variable.parameter.wolfram
         3: keyword.operator.Pattern.wolfram
-      push: expressions
+      push:
+        - meta_content_scope: meta.pattern.wolfram
+        - match: \?
+          scope: keyword.operator.PatternTest.wolfram
+        - match: ':(?!:)'
+          scope: keyword.operator.Optional.wolfram
+          pop: true
+        - include: expressions-nopattern
+        # we should check the precedence here
+        - match: (?=(,|;|/;|(:-)>|(:)?=|\]|\)))
+          pop: true
 
   function:
     - match: ({{identifier}})\s*(\[(?!\[))
