@@ -133,7 +133,7 @@ contexts:
       scope: keyword.operator.call.wolfram
     - match: (\/\/?\.)
       scope: keyword.operator.replace.wolfram
-    - match: (===|=!=|==|!=|>=|<=|<|>)
+    - match: (===|=!=|==|!=|>=|<=|<(?!\|)|(?<!\|)>)
       scope: keyword.operator.comparison.wolfram
     - match: (!|\|\||&&)
       scope: keyword.operator.logical.wolfram
@@ -257,15 +257,7 @@ contexts:
     - match: \(
       scope: punctuation.section.parens.begin.wolfram
       push:
-        - meta_scope: meta.braces.wolfram
-        - include: expressions
-    - match: \]
-      scope: punctuation.section.brackets.end.wolfram
-      pop: true
-    - match: \[
-      scope: punctuation.section.brackets.begin.wolfram
-      push:
-        - meta_scope: meta.brackets.wolfram
+        - meta_scope: meta.parens.wolfram
         - include: expressions
     - match: \]\]
       scope: punctuation.section.parts.end.wolfram
@@ -275,20 +267,30 @@ contexts:
       push:
         - meta_scope: meta.parts.wolfram
         - include: expressions
+    - match: \]
+      scope: punctuation.section.brackets.end.wolfram
+      pop: true
+    - match: \[
+      scope: punctuation.section.brackets.begin.wolfram
+      push:
+        - meta_scope: meta.brackets.wolfram
+        - include: expressions
     - match: \}
       scope: punctuation.section.braces.end.wolfram
       pop: true
     - match: \{
       scope: punctuation.section.braces.begin.wolfram
       push:
-        - meta_scope: meta.brackets.wolfram
+        - meta_scope: meta.braces.wolfram
         - include: expressions
-    - match: \|>
-      scope: punctuation.section.associations.end.wolfram
-      pop: true
     - match: <\|
       scope: punctuation.section.associations.begin.wolfram
       push:
         - meta_scope: meta.associations.wolfram
+        - match: \|>
+          scope: punctuation.section.associations.end.wolfram
+          pop: true
         - include: expressions
+    - match: \|>
+      scope: invalid.illegal.wolfram
 
