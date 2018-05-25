@@ -95,7 +95,7 @@ contexts:
         - match: \\[^()!*]
           scope: constant.character.escape.wolfram
         - match: \`\w+\`
-          scope: variable.parameter.wolfram
+          scope: constant.other.placeholder.wolfram
 
   shorthand:
     - match: (::)\s*([[:alnum:]]+)
