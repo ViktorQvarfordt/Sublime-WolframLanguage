@@ -19,7 +19,8 @@ scope: source.wolfram
 # Partly based on https://github.com/JuliaEditorSupport/Julia-sublime/blob/master/Julia.sublime-syntax
 
 variables:
-  identifier: '[`$[:alpha:]][`$[:alnum:]]*'
+  symbol: '[$[:alpha:]]+[$[:alnum:]]*'
+  identifier: (?:{{symbol}}`)*({{symbol}})
 
   # Built-in functions
   built_in_functions: |-
@@ -114,7 +115,7 @@ contexts:
     - match: (//)\s*({{identifier}})
       captures:
         1: keyword.operator.Postfix.wolfram
-        2: variable.function.wolfram
+        3: variable.function.wolfram
 
   operators:
     - match: (@\*|@{1,3}|\/[@*])
@@ -150,7 +151,7 @@ contexts:
     - match: ({{identifier}})?(_{1,3}({{identifier}})?)
       captures:
         1: variable.parameter.wolfram
-        2: support.class.wolfram
+        3: support.class.wolfram
       push: 
         - meta_scope: meta.pattern.wolfram
         - match: (?=[^?:])
@@ -164,14 +165,14 @@ contexts:
     - match: ({{identifier}})(:(?!:))
       captures:
         1: variable.parameter.wolfram
-        2: keyword.operator.Pattern.wolfram
+        3: keyword.operator.Pattern.wolfram
       push: expressions
 
   function:
     - match: ({{identifier}})\s*(\[(?!\[))
       captures:
         1: variable.function.wolfram
-        2: punctuation.section.brackets.begin.wolfram
+        3: punctuation.section.brackets.begin.wolfram
       push: 
         - meta_scope: meta.block.wolfram
         - match: \]
