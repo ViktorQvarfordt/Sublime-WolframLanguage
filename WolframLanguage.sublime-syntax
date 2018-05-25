@@ -99,7 +99,7 @@ contexts:
     - match: ((?:System`)?{{built_in_constants}})
       scope: constant.language.wolfram
     - match: ((?:System`)?{{built_in_options}})
-      scope: constant.language.wolfram
+      scope: variable.function.wolfram
     - match: \"
       scope: string.quoted.wolfram
       push:
