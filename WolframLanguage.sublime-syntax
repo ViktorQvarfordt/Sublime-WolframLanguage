@@ -64,12 +64,13 @@ contexts:
         4: constant.numeric.line-number.find-in-files
         5: comment.line.wolfram
     - match: \(\*
-      scope: comment.block.wolfram
-      push: 
-        - meta_scope: meta.comment.wolfram
-        - meta_content_scope: comment.block.wolfram
+      push: comment-block
+
+  comment-block:
+      - meta_scope: comment.block.wolfram
+      - match: \(\*
+        push: comment-block
         - match: \*\)
-          scope: comment.block.wolfram
           pop: true
 
   literals:
