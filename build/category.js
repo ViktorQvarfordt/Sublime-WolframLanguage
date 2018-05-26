@@ -11,7 +11,7 @@ const optDict = [];
 const constDict = [];
 
 for (name in dict) {
-	if (dict[name].includes('RowBox')) {
+	if (dict[name].match(/^\uf7c1\uf7c9\uf7c8RowBox/)) {
 		funcDict.push(name.replace('$', '\\$'));
 	} else if (dict[name].match(/is an? (\w+ )?option/)) {
 		optDict.push(name.replace('$', '\\$'));
