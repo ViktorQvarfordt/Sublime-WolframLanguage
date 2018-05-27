@@ -229,6 +229,11 @@
 (* ^ meta.parens.wolfram *)
 (*  ^ meta.parens.wolfram punctuation.section.parens.end.wolfram *)
 
+  [ [ ] ]
+(*^^^ meta.parts.wolfram punctuation.section.parts.begin.wolfram *)
+(*   ^ meta.parts.wolfram *)
+(*    ^^^ meta.parts.wolfram punctuation.section.parts.end.wolfram *)
+
 
 (* ASSERTION FREE *)
 
