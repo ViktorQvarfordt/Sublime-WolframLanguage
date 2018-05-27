@@ -59,6 +59,7 @@ contexts:
     - include: operators
     - include: pattern
     - include: pattern-short
+    - include: scoping
     - include: function
     - include: variable
     - include: nested
@@ -69,6 +70,7 @@ contexts:
     - include: shorthand
     - include: operators
     - include: pattern-short
+    - include: scoping
     - include: function
     - include: variable
     - include: nested
@@ -212,6 +214,33 @@ contexts:
       scope: variable.other
     - match: (#[a-zA-Z][[:alnum:]]*|#\d*)
       scope: variable.parameter
+
+  scoping:
+    - match: (Block|Module|With|Function)\s*(\[(?!\[))
+      captures:
+        1: variable.function.wolfram
+        2: punctuation.section.brackets.begin.wolfram
+      push:
+        - meta_content_scope: meta.block.local.wolfram
+        - match: '\{'
+          set: [localized, local]
+        - include: expressions
+
+  localized:
+    - meta_content_scope: meta.block.local.wolfram
+    - match: '\,'
+      push: local
+    - match: '\}|\]'
+      pop: true
+    - include: expressions
+
+  local:
+    - match: '{{identifier}}'
+      scope: variable.parameter.wolfram
+      pop: true
+    - match: (?=[\,|\}])
+      pop: true
+
 
   declarations:
     - match: |-
