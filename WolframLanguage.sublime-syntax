@@ -57,16 +57,17 @@ contexts:
     - include: comments
     - include: literals
     - include: shorthand
+    - include: nested
     - include: operators
     - include: pattern
     - include: function
     - include: variable
-    - include: nested
 
   comments:
     - match: (\(\*\s*::{{nb_code_styles}}::\s*\*\))
       scope: comment.block.wolfram
       push:
+        - meta_scope: meta.input.wolfram
         - match: ^$
           pop: true
         - match: ^\(\*
@@ -119,7 +120,7 @@ contexts:
         2: variable.function.wolfram
 
   operators:
-    - match: (@[@*]?|/[@*])
+    - match: ([/@]?@|[/@]\*(?!\)))
       scope: keyword.operator.call.wolfram
     - match: (//?\.)
       scope: keyword.operator.replace.wolfram
@@ -155,10 +156,15 @@ contexts:
           pop: true
         - match: \?
           scope: keyword.operator.PatternTest.wolfram
-          push: expressions
+          push:
+            - match: (?=,)
+              pop: true
+            - include: expressions
         - match: ':'
           scope: keyword.operator.Optional.wolfram
-          push: expressions
+          push:
+            - match: (?=,)
+              pop: true
     - match: ({{identifier}})(:(?!:))
       captures:
         1: variable.parameter.wolfram
@@ -224,7 +230,7 @@ contexts:
   nested:
     - match: \,
       scope: punctuation.separator.sequence.wolfram
-      pop: true
+      # pop: true
     - match: \)
       scope: punctuation.section.parens.end.wolfram
       pop: true
@@ -258,10 +264,10 @@ contexts:
         - meta_scope: meta.brackets.wolfram
         - include: expressions
     - match: \|>
-      scope: punctuation.section.associations.end.wolfram
+      scope: punctuation.section.association.end.wolfram
       pop: true
     - match: <\|
-      scope: punctuation.section.associations.begin.wolfram
+      scope: punctuation.section.association.begin.wolfram
       push:
         - meta_scope: meta.associations.wolfram
         - include: expressions
