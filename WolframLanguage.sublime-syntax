@@ -287,10 +287,10 @@ contexts:
       push:
         - meta_scope: meta.parens.wolfram
         - include: expressions
-    - match: \]\]
+    - match: \]\s*\]
       scope: punctuation.section.parts.end.wolfram
       pop: true
-    - match: \[\[
+    - match: \[\s*\[
       scope: punctuation.section.parts.begin.wolfram
       push:
         - meta_scope: meta.parts.wolfram
