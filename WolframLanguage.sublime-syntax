@@ -279,7 +279,6 @@ contexts:
   nested:
     - match: \,
       scope: punctuation.separator.sequence.wolfram
-      pop: true
     - match: \)
       scope: punctuation.section.parens.end.wolfram
       pop: true
