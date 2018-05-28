@@ -161,12 +161,8 @@ contexts:
     # Can also be matched with Pattern, PatternTest, Optional
     - match: ({{identifier}})?(_{1,3})(({{identifier}})?)\s*
       scope: variable.parameter.wolfram
-      # captures:
-      #   1: variable.parameter.wolfram
-      #   3: support.class.wolfram
-      #   4: support.class.wolfram
       push:
-        - meta_scope: meta.pattern.wolfram
+        - meta_scope: meta.pattern.blank.wolfram
         - match: \?
           scope: keyword.operator.PatternTest.wolfram
           pop: true
