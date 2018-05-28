@@ -186,7 +186,7 @@ contexts:
           pop: true
         - include: expressions-nopattern
         # we should check the precedence here
-        - match: (?=(,|;|/;|(:-)>|(:)?=|\]|\)))
+        - match: (?=,|;|/;|[:-]>|(:)?=|\]|\))
           pop: true
 
   function:
@@ -275,37 +275,37 @@ contexts:
   nested:
     - match: \,
       scope: punctuation.separator.sequence.wolfram
-    - match: \)
-      scope: punctuation.section.parens.end.wolfram
-      pop: true
     - match: \(
       scope: punctuation.section.parens.begin.wolfram
       push:
         - meta_scope: meta.parens.wolfram
+        - match: \)
+          scope: punctuation.section.parens.end.wolfram
+          pop: true
         - include: expressions
-    - match: \]\s*\]
-      scope: punctuation.section.parts.end.wolfram
-      pop: true
     - match: \[\s*\[
       scope: punctuation.section.parts.begin.wolfram
       push:
         - meta_scope: meta.parts.wolfram
+        - match: \]\s*\]
+          scope: punctuation.section.parts.end.wolfram
+          pop: true
         - include: expressions
-    - match: \]
-      scope: punctuation.section.brackets.end.wolfram
-      pop: true
     - match: \[
       scope: punctuation.section.brackets.begin.wolfram
       push:
         - meta_scope: meta.brackets.wolfram
+        - match: \]
+          scope: punctuation.section.brackets.end.wolfram
+          pop: true
         - include: expressions
-    - match: \}
-      scope: punctuation.section.braces.end.wolfram
-      pop: true
     - match: \{
       scope: punctuation.section.braces.begin.wolfram
       push:
         - meta_scope: meta.braces.wolfram
+        - match: \}
+          scope: punctuation.section.braces.end.wolfram
+          pop: true
         - include: expressions
     - match: <\|
       scope: punctuation.section.associations.begin.wolfram
