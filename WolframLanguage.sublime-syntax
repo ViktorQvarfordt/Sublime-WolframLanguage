@@ -103,12 +103,11 @@ contexts:
     - match: ((?:System`)?{{built_in_options}})
       scope: variable.function.wolfram
     - match: \"
-      scope: string.quoted.wolfram
+      scope: punctuation.definition.string.begin
       push:
-        - meta_scope: meta.string.wolfram
         - meta_content_scope: string.quoted.wolfram
         - match: \"
-          scope: string.quoted.wolfram
+          scope: punctuation.definition.string.end
           pop: true
         - match: \\\[\w+\]
           scope: constant.character.escape.wolfram
