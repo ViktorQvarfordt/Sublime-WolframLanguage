@@ -122,17 +122,17 @@
 (* PATTERNS *)
 
   var_head  foo
-(*^^^^^^^^ meta.pattern.wolfram variable.parameter.wolfram  *)
+(*^^^^^^^^ meta.pattern.blank.wolfram variable.parameter.wolfram *)
 (*          ^ variable.other *)
 
   var_head:foo
-(*^^^^^^^^ meta.pattern.wolfram variable.parameter.wolfram *)
-(*        ^ meta.pattern.wolfram keyword.operator.Optional.wolfram *)
+(*^^^^^^^^ meta.pattern.blank.wolfram variable.parameter.wolfram *)
+(*        ^ meta.pattern.blank.wolfram keyword.operator.Optional.wolfram *)
 (*         ^^^ variable.other *)
 
   var_head ? EvenQ
-(*^^^^^^^^ meta.pattern.wolfram variable.parameter.wolfram  *)
-(*         ^ meta.pattern.wolfram keyword.operator.PatternTest.wolfram *)
+(*^^^^^^^^ meta.pattern.blank.wolfram variable.parameter.wolfram *)
+(*         ^ meta.pattern.blank.wolfram keyword.operator.PatternTest.wolfram *)
 (*           ^^^^^ variable.function *)
 
   var: patt ? EvenQ : foo
@@ -150,7 +150,7 @@
   f[x_, y_] := 2x
 (*^ entity.name.function*)
 (* ^ meta.arguments.wolfram punctuation.section.brackets.begin.wolfram *)
-(*  ^^ meta.arguments.wolfram meta.pattern.wolfram variable.parameter.wolfram *)
+(*  ^^ meta.arguments.wolfram meta.pattern.blank.wolfram variable.parameter.wolfram *)
 (*    ^^ meta.arguments.wolfram punctuation.separator.sequence.wolfram *)
 (*      ^ variable.parameter*)
 (*        ^ meta.arguments.wolfram punctuation.section.brackets.end.wolfram *)
@@ -193,7 +193,8 @@
 (*             ^^ string.quoted *)
 
   "this`is`a`context"
-(*^^^^^^^^^^^^^^^^^^^ meta.string.wolfram string.quoted.wolfram  *)
+(*^ punctuation.definition.string.begin *)
+(* ^^^^^^^^^^^^^^^^^ string.quoted.wolfram*)
 
 
 (* COMMENTS *)
