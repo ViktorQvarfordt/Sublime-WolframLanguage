@@ -160,21 +160,23 @@ contexts:
   pattern-short:
     # Including Blank, BlankSequence, BlankNullSequence
     # Can also be matched with Pattern, PatternTest, Optional
-    - match: ({{identifier}})?(_{1,3})(({{identifier}})?)\s*
+    - match: ({{identifier}})?(_{1,3})(({{identifier}})?)
       scope: variable.parameter.wolfram
       push:
         - meta_scope: meta.pattern.blank.wolfram
-        - match: \?
-          scope: keyword.operator.PatternTest.wolfram
+        - match: (?:\s*)(\?)
+          captures:
+            1: keyword.operator.PatternTest.wolfram
           pop: true
-        - match: ':(?!:)'
-          scope: keyword.operator.Optional.wolfram
+        - match: (?:\s*)(:)(?=[^:>])
+          captures:
+            1: keyword.operator.Optional.wolfram
           pop: true
-        - match: (?![\s])
+        - match: (?=.)
           pop: true
 
   pattern:
-    - match: '({{identifier}})\s*(:(?!:))'
+    - match: '({{identifier}})\s*(:(?=[^:>]))'
       captures:
         1: variable.parameter.wolfram
         3: keyword.operator.Pattern.wolfram
@@ -182,13 +184,13 @@ contexts:
         - meta_content_scope: meta.pattern.wolfram
         - match: \?
           scope: keyword.operator.PatternTest.wolfram
-        - match: ':(?!:)'
+        - match: ':(?=[^:>])'
           scope: keyword.operator.Optional.wolfram
           pop: true
-        - include: expressions-nopattern
         # we should check the precedence here
         - match: (?=,|;|/;|[:-]>|(:)?=|\]|\))
           pop: true
+        - include: expressions-nopattern
 
   function:
     - match: ({{identifier}})\s*(\[(?!\[))
@@ -215,19 +217,29 @@ contexts:
   scoping:
     - match: (Block|Module|With|Function)\s*(\[(?!\[))
       captures:
-        1: variable.function.wolfram
+        1: variable.function.scoping.wolfram
         2: punctuation.section.brackets.begin.wolfram
       push:
-        - meta_content_scope: meta.block.local.wolfram
+        - meta_content_scope: meta.block.wolfram
         - match: '\{'
           set: [localized, local]
+        - match: '\]'
+          scope: punctuation.section.brackets.end.wolfram
+          pop: true
         - include: expressions
 
   localized:
     - meta_content_scope: meta.block.local.wolfram
     - match: '\,'
       push: local
-    - match: '\}|\]'
+    - match: '\}'
+      set:
+        - meta_content_scope: meta.block.wolfram
+        - match: '\]'
+          scope: punctuation.section.brackets.end.wolfram
+          pop: true
+        - include: expressions
+    - match: '\]'
       pop: true
     - include: expressions
 
@@ -316,6 +328,4 @@ contexts:
           scope: punctuation.section.associations.end.wolfram
           pop: true
         - include: expressions
-    - match: \|>
-      scope: invalid.illegal.wolfram
 
