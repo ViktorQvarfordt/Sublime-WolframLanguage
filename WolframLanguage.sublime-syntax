@@ -151,10 +151,12 @@ contexts:
       scope: keyword.operator.string.wolfram
     - match: \.\.\.?
       scope: keyword.operator.repeat.wolfram
+    - match: ';'
+      scope: keyword.operator.compound.wolfram
     - match: \\\[[[:alnum:]]+\]
       scope: keyword.operator.word.wolfram
     - match: '&'
-      scope: variable.function.wolfram
+      scope: keyword.operator.function.wolfram
 
   pattern-short:
     # Including Blank, BlankSequence, BlankNullSequence
