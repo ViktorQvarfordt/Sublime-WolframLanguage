@@ -236,6 +236,20 @@
 (*    ^^^ meta.parts.wolfram punctuation.section.parts.end.wolfram *)
 
 
+(* SCOPING *)
+
+Module[
+(*^^^^ variable.function.scoping.wolfram *)
+(*    ^ punctuation.section.brackets.begin.wolfram *)
+    { foo, bar = 1},
+(*   ^ meta.block.local.wolfram *)
+(*    ^^^ meta.block.local.wolfram variable.parameter.wolfram *)
+(*                  ^ meta.block.wolfram *)
+    foo
+(*  ^^^ meta.block.wolfram variable.other *)
+]
+
+
 (* ASSERTION FREE *)
 
   System`foo[[1]]
