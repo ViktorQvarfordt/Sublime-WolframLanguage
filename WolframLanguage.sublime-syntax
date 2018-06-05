@@ -332,7 +332,7 @@ contexts:
     - match: <\|
       scope: punctuation.section.association.begin.wolfram
       push:
-        - meta_scope: meta.associations.wolfram
+        - meta_scope: meta.association.wolfram
         - match: \|>
           scope: punctuation.section.association.end.wolfram
           pop: true
