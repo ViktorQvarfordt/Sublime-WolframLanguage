@@ -210,9 +210,9 @@
 (* BRACKETS *)
 
   <|   |>  foo
-(*^^ meta.associations.wolfram punctuation.section.associations.begin.wolfram  *)
-(*   ^ meta.associations.wolfram  *)
-(*     ^^ meta.associations.wolfram punctuation.section.associations.end.wolfram *)
+(*^^ meta.association.wolfram punctuation.section.association.begin.wolfram  *)
+(*   ^ meta.association.wolfram  *)
+(*     ^^ meta.association.wolfram punctuation.section.association.end.wolfram *)
 (*         ^^^ source.wolfram variable.other *)
 
   [ ]
