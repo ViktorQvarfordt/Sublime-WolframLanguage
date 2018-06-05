@@ -52,11 +52,6 @@ variables:
 
 contexts:
 
-  prototype:
-    - match: \*\)
-      scope: comment.block.wolfram
-      pop: true
-
   main:
     - include: declarations
     - include: expressions
