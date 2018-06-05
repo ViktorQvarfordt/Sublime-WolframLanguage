@@ -260,6 +260,7 @@ contexts:
         (?x)
         {{identifier}}
         (?=
+          \s*
           (
             \[
             (?>
