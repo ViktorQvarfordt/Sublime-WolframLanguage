@@ -114,7 +114,7 @@ contexts:
     - match: \"
       scope: punctuation.definition.string.begin
       push:
-        - meta_content_scope: string.quoted.wolfram
+        - meta_scope: string.quoted.wolfram
         - match: \"
           scope: punctuation.definition.string.end
           pop: true
