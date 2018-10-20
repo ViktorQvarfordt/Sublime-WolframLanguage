@@ -57,16 +57,8 @@ contexts:
     - include: expressions
 
   expressions:
-    - include: comments
-    - include: literals
-    - include: shorthand
-    - include: operators
     - include: pattern
-    - include: pattern-short
-    - include: scoping
-    - include: function
-    - include: variable
-    - include: nested
+    - include: expressions-nopattern
 
   expressions-nopattern:
     - include: comments
@@ -98,7 +90,7 @@ contexts:
         pop: true
 
   literals:
-    - match: (\d+(\.\d*)?`?|\d*\.\d+`?)
+    - match: (?:\d+\.?|\.\d)\d*\`{0,2}
       scope: constant.numeric.wolfram
     - match: ((?:System`)?{{built_in_numeric_constants}})
       scope: constant.numeric.wolfram
@@ -154,6 +146,8 @@ contexts:
       scope: keyword.operator.string.wolfram
     - match: \.\.\.?
       scope: keyword.operator.repeat.wolfram
+    - match: ';;'
+      scope: keyword.operator.span.wolfram
     - match: ';'
       scope: keyword.operator.compound.wolfram
     - match: \\\[[[:alnum:]]+\]
@@ -172,7 +166,7 @@ contexts:
           captures:
             1: keyword.operator.PatternTest.wolfram
           pop: true
-        - match: (?:\s*)(:)(?=[^:>])
+        - match: (?:\s*)(:)(?=[^:>=])
           captures:
             1: keyword.operator.Optional.wolfram
           pop: true
@@ -180,7 +174,7 @@ contexts:
           pop: true
 
   pattern:
-    - match: '({{identifier}})\s*(:(?=[^:>]))'
+    - match: '({{identifier}})\s*(:(?=[^:>=]))'
       captures:
         1: variable.parameter.wolfram
         3: keyword.operator.Pattern.wolfram
@@ -188,11 +182,11 @@ contexts:
         - meta_content_scope: meta.pattern.wolfram
         - match: \?
           scope: keyword.operator.PatternTest.wolfram
-        - match: ':(?=[^:>])'
+        - match: ':(?=[^:>=])'
           scope: keyword.operator.Optional.wolfram
           pop: true
         # we should check the precedence here
-        - match: (?=,|;|/;|[:-]>|(:)?=|\]|\))
+        - match: (?=[:-]>|:?=|\/[;.\/]|[\]\)\},;&]|>>|<<)
           pop: true
         - include: expressions-nopattern
 
@@ -253,6 +247,7 @@ contexts:
       pop: true
     - match: (?=[\,|\}])
       pop: true
+    - include: expressions
 
 
   declarations:
@@ -262,14 +257,14 @@ contexts:
         (?=
           \s*
           (
-            \[
+            \[(?!\[)
             (?>
               [^\[\]]+|
               \g<-1>
             )*
             \]
           )
-          \s*:=
+          \s*(?:\/;.*)?\s*:=
         )
       scope: entity.name.function
       push: 
@@ -283,6 +278,8 @@ contexts:
             - include: sequence
         - match: (?=[^\[])
           pop: true
+    - match: ((?:{{symbol}}`)*(\${{symbol}}))(?=\s*:?=)
+      scope: entity.name.constant.wolfram
 
   sequence:
     - meta_scope: meta.sequence.wolfram

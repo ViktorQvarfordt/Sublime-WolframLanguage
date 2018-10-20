@@ -173,10 +173,14 @@
 (*^ entity.name.function*)
 (*  ^ variable.parameter*)
 
-(* <<< the scoping from above is breaking this one *)
   f[x_] := 2x
 (*^ entity.name.function*)
 (*  ^ variable.parameter*)
+
+  f[x_] /; x > 0 := x
+(*^ entity.name.function  *)
+
+  f[[]]
 
 
 (* STRINGS *)
@@ -230,10 +234,10 @@
 (* ^ meta.parens.wolfram *)
 (*  ^ meta.parens.wolfram punctuation.section.parens.end.wolfram *)
 
-  [ [ ] ]
+  [ [ ]]
 (*^^^ meta.parts.wolfram punctuation.section.parts.begin.wolfram *)
 (*   ^ meta.parts.wolfram *)
-(*    ^^^ meta.parts.wolfram punctuation.section.parts.end.wolfram *)
+(*    ^^ meta.parts.wolfram punctuation.section.parts.end.wolfram *)
 
 
 (* SCOPING *)
@@ -249,11 +253,26 @@ Module[
 (*  ^^^ meta.block.wolfram variable.other *)
 ]
 
+Block[
+  {
+    var1, (*comment*) var2 , var3 = var4
+(*  ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
+(*        ^^^^^^^^^^^ meta.block.local.wolfram comment.block.wolfram *)
+(*                    ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
+(*                           ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
+(*                                  ^^^^ meta.block.local.wolfram variable.other*)
+  },
+
+  code
+(*^^^^ meta.block.wolfram variable.other *)
+
+]
+
 
 (* ASSERTION FREE *)
 
   System`foo[[1]]
-
+  a//a
   StringMatchQ[IgnoreCase -> Automatic, foo -> bar]
 
   foo["bar",  baz_Lisght] :=
