@@ -1,0 +1,29 @@
+[
+	{
+		"id": "preferences",
+		"children":
+		[
+			{
+				"caption": "Package Settings",
+				"id": "package-settings",
+				"children":
+				[
+					{
+						"caption": "Wolfram Language Settings",
+						"children":
+						[
+							{
+								"caption": "Wolfram Language Settings",
+								"command": "edit_settings",
+								"args":
+								{
+									"base_file": "${packages}/WolframLanguage/WolframLanguage.sublime-settings"
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]
