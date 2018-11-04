@@ -74,9 +74,9 @@ contexts:
     - match: '(\(\*\s*)(::)([[:alnum:]]+)(::)(\s*\*\))'
       captures:
         1: comment.line.wolfram
-        2: constant.numeric.line-number.find-in-files
-        3: constant.language.wolfram
-        4: constant.numeric.line-number.find-in-files
+        2: constant.numeric.line-number.find-in-files punctuation.style.begin.wolfram
+        3: constant.language.style.wolfram
+        4: constant.numeric.line-number.find-in-files punctuation.style.end.wolfram
         5: comment.line.wolfram
     - match: \(\*
       push: comment-block

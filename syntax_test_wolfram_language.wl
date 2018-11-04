@@ -188,6 +188,7 @@
 (*^ punctualation.defination.string.begin *)
 (*        ^^ constant.character.escape *)
 (*          ^^ string.quoted *)
+(*                     ^^^^^^^^^^^^^^^^^^^ string.quoted *)
 
   foo::bar = "message"
 (*   ^^ keyword.operator.MessageName *)
@@ -201,6 +202,7 @@
   "box 1: \!\(x\^2\); box 2: \(y\^3\) "
 (*        ^ keyword.operator.string-box *)
 (*             ^^ keyword.operator.x-scriptBox *)
+(*                           ^^^^^^^^ string.quoted *)
 
 
 (* COMMENTS *)
@@ -256,20 +258,19 @@
 (*  ^^^ meta.block.wolfram variable.other *)
   ]
 
-Block[
-  {
-    var1, (*comment*) var2 , var3 = var4
-(*  ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
-(*        ^^^^^^^^^^^ meta.block.local.wolfram comment.block.wolfram *)
-(*                    ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
-(*                           ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
-(*                                  ^^^^ meta.block.local.wolfram variable.other *)
-  },
+  Block[
+    {
+      var1, (*comment*) var2, var3 = var4
+(*    ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
+(*          ^^^^^^^^^^^ meta.block.local.wolfram comment.block.wolfram *)
+(*                      ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
+(*                            ^^^^ meta.block.local.wolfram variable.parameter.wolfram *)
+(*                                   ^^^^ meta.block.local.wolfram variable.other *)
+    },
 
-  code
-(* ^^^^ meta.block.wolfram variable.other *)
-
-]
+    code
+(*  ^^^^ meta.block.wolfram variable.other *)
+  ]
 
 
 (* ASSERTION FREE *)
@@ -286,4 +287,6 @@ Block[
   asd
  *)
 
-(* ::s:: *)
+(* ::Input:: *)
+(* ^^ punctuation.style.begin.wolfram *)
+(*   ^^^^^ constant.language.style.wolfram *)
