@@ -190,6 +190,12 @@
 (*          ^^ string.quoted *)
 (*                     ^^^^^^^^^^^^^^^^^^^ string.quoted *)
 
+  "\[alpha]"
+(* ^^^^^^^^ constant.character.built-in.wolfram *)
+
+  "\:123456"
+(* ^^^^^^ constant.character.encoding.wolfram *)
+
   foo::bar = "message"
 (*   ^^ keyword.operator.MessageName *)
 (*     ^^^ string.unquoted *)
