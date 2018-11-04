@@ -49,7 +49,6 @@ variables:
 
   nb_code_styles: (Input)
 
-
 contexts:
 
   main:
@@ -105,14 +104,34 @@ contexts:
         - match: \"
           scope: punctuation.definition.string.end
           pop: true
-        - match: \\\[\w+\]
+
+        # box representation
+        - match: \\!\\\(
+          scope: keyword.operator.string-box.wolfram
+          push:
+            # workaround plain scope in string meta scope
+            - meta_scope: string.unquoted.yaml meta.string-box.wolfram
+            - match: \\\)
+              scope: keyword.operator.string-box.wolfram
+              pop: true
+            - include: boxed
+
+        # escape characters
+        - match: \\([nrtb]|\r?\n)
           scope: constant.character.escape.wolfram
-        - match: \\[()!*]
-          scope: keyword.operator.wolfram
-        - match: \\[^()!*]
-          scope: constant.character.escape.wolfram
-        - match: (?<=[\s\"\`])\`\w*\`
-          scope: constant.other.placeholder.wolfram
+
+        # string template
+        - match: \`\w*\`
+          scope: variable.parameter.wolfram
+        - match: <\*
+          scope: keyword.operator.template-expression.wolfram
+          push:
+            # workaround plain scope in string meta scope
+            - meta_scope: string.unquoted.yaml meta.template-expression.wolfram
+            - match: \*>
+              scope: keyword.operator.template-expression.wolfram
+              pop: true
+            - include: expressions
 
   shorthand:
     - match: (::)\s*([[:alnum:]]+)
@@ -249,7 +268,6 @@ contexts:
       pop: true
     - include: expressions
 
-
   declarations:
     - match: |-
         (?x)
@@ -330,3 +348,26 @@ contexts:
           scope: punctuation.section.association.end.wolfram
           pop: true
         - include: expressions
+    - match: (\\!)?\\\(
+      scope: punctuation.section.box.begin.wolfram
+      push:
+        - meta_scope: meta.box.wolfram
+        - match: \\\)
+          scope: punctuation.section.box.end.wolfram
+          pop: true
+        - include: boxed
+
+  boxed:
+    - include: expressions
+    - match: \\[%&+_^]
+      scope: keyword.operator.x-scriptBox.wolfram
+    - match: \\/
+      scope: keyword.operator.FractionBox.wolfram
+    - match: \\@
+      scope: keyword.operator.SqrtBox.wolfram
+    - match: \\`
+      scope: keyword.operator.FormBox.wolfram
+    - match: \\\*
+      scope: keyword.operator.box-constructor.wolfram
+      push: expressions
+
