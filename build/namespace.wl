@@ -1,23 +1,26 @@
 (* ::Package:: *)
 
-namespace = Select[Names["*"], PrintableASCIIQ];
+Begin["wl`"];
 
 
-Monitor[
-	Quiet[
-		usages = Table[
-			namespace[[i]] -> (ToExpression[namespace[[i]] <> "::usage"]),
-		{i, Length @ namespace}],
-	Message::name],
-	ProgressIndicator[i / Length @ namespace]
+namespace = Select[Names["System`*"], PrintableASCIIQ];
+namespaceSize = Length[namespace];
+
+
+Monitor[Quiet[
+	usages = Table[
+		namespace[[i]] -> ToExpression[namespace[[i]] <> "::usage"],
+		{i, namespaceSize}
+	], Message::name],
+	ProgressIndicator[i / namespaceSize]
 ];
 
 
-Export[NotebookDirectory[] <> "usage-dict.json",
-	Select[usages, Head[Values[#]] === String &]
-];
+usageDictionary = Select[usages, Head[Values[#]] === String &];
+usageAbsentSymbols = Keys @ Select[usages, Head[Values[#]] =!= String &];
 
 
-Export[NotebookDirectory[] <> "usage-absent.json", Keys[
-	Select[usages, Head[Values[#]] =!= String && StringMatchQ[Keys[#], ("$" | _?UpperCaseQ) ~~ ___] &]
-]];
+DumpSave[NotebookDirectory[] <> "wldata.mx", "wl`"];
+
+
+End[];
