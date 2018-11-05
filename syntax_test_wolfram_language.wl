@@ -185,7 +185,7 @@
 (* STRINGS *)
 
   "This is\n\a string. (* not a comment *)"
-(*^ punctualation.defination.string.begin *)
+(*^ punctuation.definition.string.begin *)
 (*        ^^ constant.character.escape *)
 (*          ^^ string.quoted *)
 (*                     ^^^^^^^^^^^^^^^^^^^ string.quoted *)
