@@ -164,7 +164,7 @@
 
   f[x_?TrueQ, y_ /; Negative[y]] := 2x /; y > 0
 (*^ entity.name.function *)
-(* ^ variable.parameter *)
+(*  ^^ variable.parameter *)
 (*    ^ keyword.operator *)
 (*               ^^ keyword.operator *)
 
@@ -218,6 +218,10 @@
 (*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ comment.block.wolfram *)
 (*           ^^^^^^^^^^^^^^^^^^^^^ comment.block.wolfram comment.block.wolfram *)
 
+(* ::Input:: *)
+(* ^^ punctuation.style.begin.wolfram *)
+(*   ^^^^^ constant.language.style.wolfram *)
+
 
 (* BRACKETS *)
 
@@ -246,10 +250,10 @@
 (*^^^^^ meta.box.wolfram *)
 (*   ^^ punctuation.section.box.end.wolfram *)
 
-  [[ ]]
-(*^^ punctuation.section.parts.begin.wolfram *)
-(*^^^^^ meta.parts.wolfram *)
-(*   ^^ punctuation.section.parts.end.wolfram *)
+  [ [ ]]
+(*^^^ punctuation.section.parts.begin.wolfram *)
+(*^^^^^^ meta.parts.wolfram *)
+(*    ^^ punctuation.section.parts.end.wolfram *)
 
 
 (* SCOPING *)
@@ -293,7 +297,3 @@
   comment 
   asd
  *)
-
-(* ::Input:: *)
-(* ^^ punctuation.style.begin.wolfram *)
-(*   ^^^^^ constant.language.style.wolfram *)

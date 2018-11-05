@@ -99,49 +99,56 @@ contexts:
       scope: variable.function.wolfram
     - match: \"
       scope: string.quoted.wolfram punctuation.definition.string.begin
+      push: string
+
+  inside-string:
+    - match: (?=")
+      pop: true
+    - match: \\\"
+      scope: string.quoted.wolfram punctuation.definition.string.begin
+      push: string
+
+  string:
+    - match: \"
+      scope: string.quoted.wolfram punctuation.definition.string.end
+      pop: true
+
+    # box representation
+    - match: \\!\\\(
+      scope: keyword.operator.string-box.wolfram
       push:
-        - match: \"
-          scope: string.quoted.wolfram punctuation.definition.string.end
-          pop: true
-
-        # box representation
-        - match: \\!\\\(
+        # workaround plain scope in string meta scope
+        - meta_scope: meta.string-box.wolfram
+        - match: \\\)
           scope: keyword.operator.string-box.wolfram
-          push:
-            # workaround plain scope in string meta scope
-            - meta_scope: meta.string-box.wolfram
-            - match: \\\)
-              scope: keyword.operator.string-box.wolfram
-              pop: true
-            - match: (?=\")
-              pop: true
-            - include: boxed
+          pop: true
+        - include: inside-string
+        - include: boxed
 
-        # escape characters
-        - match: \\(["nrtbf\\]|\r?\n)
-          scope: constant.character.escape.wolfram
-        - match: \\\.[0-9A-Fa-f]{2}|\\:[0-9A-Fa-f]{4}
-          scope: constant.character.encoding.wolfram
-        - match: \\\[\w+\]
-          scope: constant.character.built-in.wolfram
+    # escape characters
+    - match: \\(["nrtbf\\]|\r?\n)
+      scope: constant.character.escape.wolfram
+    - match: \\\.[0-9A-Fa-f]{2}|\\:[0-9A-Fa-f]{4}
+      scope: constant.character.encoding.wolfram
+    - match: \\\[\w+\]
+      scope: constant.character.built-in.wolfram
 
-        # string template
-        - match: \`\w*\`
-          scope: variable.parameter.wolfram
-        - match: <\*
+    # string template
+    - match: \`\w*\`
+      scope: variable.parameter.wolfram
+    - match: <\*
+      scope: keyword.operator.template-expression.wolfram
+      push:
+        # workaround plain scope in string meta scope
+        - meta_scope: meta.template-expression.wolfram
+        - match: \*>
           scope: keyword.operator.template-expression.wolfram
-          push:
-            # workaround plain scope in string meta scope
-            - meta_scope: meta.template-expression.wolfram
-            - match: \*>
-              scope: keyword.operator.template-expression.wolfram
-              pop: true
-            - match: (?=\")
-              pop: true
-            - include: expressions
+          pop: true
+        - include: inside-string
+        - include: expressions
 
-        - match: '[\s\S]'
-          scope: string.quoted.wolfram
+    - match: '[\s\S]'
+      scope: string.quoted.wolfram
 
   shorthand:
     - match: (::)\s*([[:alnum:]]+)
