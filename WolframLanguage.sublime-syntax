@@ -119,7 +119,7 @@ contexts:
         # escape characters
         - match: \\([nrtb]|\r?\n)
           scope: constant.character.escape.wolfram
-        - match: \\:\w{4}
+        - match: \\\.[0-9A-Fa-f]{2}|\\:[0-9A-Fa-f]{4}
           scope: constant.character.encoding.wolfram
         - match: \\\[\w+\]
           scope: constant.character.built-in.wolfram
