@@ -98,11 +98,10 @@ contexts:
     - match: ((?:System`)?{{built_in_options}})
       scope: variable.function.wolfram
     - match: \"
-      scope: punctuation.definition.string.begin
+      scope: string.quoted.wolfram punctuation.definition.string.begin
       push:
-        - meta_scope: string.quoted.wolfram
         - match: \"
-          scope: punctuation.definition.string.end
+          scope: string.quoted.wolfram punctuation.definition.string.end
           pop: true
 
         # box representation
@@ -110,14 +109,16 @@ contexts:
           scope: keyword.operator.string-box.wolfram
           push:
             # workaround plain scope in string meta scope
-            - meta_scope: string.unquoted.yaml meta.string-box.wolfram
+            - meta_scope: meta.string-box.wolfram
             - match: \\\)
               scope: keyword.operator.string-box.wolfram
+              pop: true
+            - match: (?=\")
               pop: true
             - include: boxed
 
         # escape characters
-        - match: \\([nrtb]|\r?\n)
+        - match: \\(["nrtbf\\]|\r?\n)
           scope: constant.character.escape.wolfram
         - match: \\\.[0-9A-Fa-f]{2}|\\:[0-9A-Fa-f]{4}
           scope: constant.character.encoding.wolfram
@@ -131,11 +132,16 @@ contexts:
           scope: keyword.operator.template-expression.wolfram
           push:
             # workaround plain scope in string meta scope
-            - meta_scope: string.unquoted.yaml meta.template-expression.wolfram
+            - meta_scope: meta.template-expression.wolfram
             - match: \*>
               scope: keyword.operator.template-expression.wolfram
               pop: true
+            - match: (?=\")
+              pop: true
             - include: expressions
+
+        - match: '[\s\S]'
+          scope: string.quoted.wolfram
 
   shorthand:
     - match: (::)\s*([[:alnum:]]+)
@@ -373,5 +379,3 @@ contexts:
       scope: keyword.operator.FormBox.wolfram
     - match: \\\*
       scope: keyword.operator.box-constructor.wolfram
-      push: expressions
-

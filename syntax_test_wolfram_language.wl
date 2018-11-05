@@ -20,7 +20,7 @@
   11.11`
 (*^^^^^^ constant.numeric *)
   11.11`11.11
-(* ^^^^^^^^^^^ constant.numeric *)
+(*^^^^^^^^^^^ constant.numeric *)
 
 
 (* NUMERIC CONSTANTS *)
@@ -157,27 +157,27 @@
 (*          ^^ keyword.operator *)
 
   f[x_, OptionsPattern[]] := 2x
-(* ^ entity.name.function *)
-(*  ^ variable.parameter *)
+(*^ entity.name.function *)
+(* ^ variable.parameter *)
 (*      ^^^^^^^^^^^^^^ variable.function *)
 (*                        ^^ keyword.operator *)
 
   f[x_?TrueQ, y_ /; Negative[y]] := 2x /; y > 0
-(* ^ entity.name.function *)
-(*  ^ variable.parameter *)
+(*^ entity.name.function *)
+(* ^ variable.parameter *)
 (*    ^ keyword.operator *)
 (*               ^^ keyword.operator *)
 
   f[x_, s_] := 2x
-(* ^ entity.name.function *)
-(*  ^ variable.parameter *)
+(*^ entity.name.function *)
+(* ^ variable.parameter *)
 
   f[x_] := 2x
-(* ^ entity.name.function *)
-(*  ^ variable.parameter *)
+(*^ entity.name.function *)
+(* ^ variable.parameter *)
 
   f[x_] /; x > 0 := x
-(* ^ entity.name.function  *)
+(*^ entity.name.function  *)
 
   f[[]]
 
@@ -193,8 +193,9 @@
   "\[alpha]"
 (* ^^^^^^^^ constant.character.built-in.wolfram *)
 
-  "\:123456"
+  "\:123456\.7890"
 (* ^^^^^^ constant.character.encoding.wolfram *)
+(*         ^^^^ constant.character.encoding.wolfram *)
 
   foo::bar = "message"
 (*   ^^ keyword.operator.MessageName *)
