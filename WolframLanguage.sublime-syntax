@@ -206,11 +206,11 @@ contexts:
 
   variable:
     - match: '(?:System`)?({{built_in_functions}})'
-      scope: variable.function
+      scope: variable.function.wolfram
     - match: '{{identifier}}'
-      scope: variable.other
+      scope: variable.other.wolfram
     - match: (#[a-zA-Z][[:alnum:]]*|#\d*)
-      scope: variable.parameter
+      scope: variable.parameter.wolfram
 
   scoping:
     - match: (Block|Module|With|Function)\s*(\[(?!\[))

@@ -42,3 +42,6 @@ writeFile["../WolframLanguage.sublime-syntax", StringReplace[
 		prefix <> StringRiffle[StringReplace["$" -> "\\$"] /@ (# /. classifiedNamespace), "|"]
 	]& /@ {"functions", "options", "constants"}
 ]];
+
+
+Export[resolveFileName["../plugin/usages.json"], wl`usageDictionary];

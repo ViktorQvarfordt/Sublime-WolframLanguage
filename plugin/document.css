@@ -1,0 +1,65 @@
+html.light {{
+    --html-background: color(var(--background) blend(black 91%));
+    --border-color: color(var(--html-background) blend(black 95%));
+}}
+
+html.dark {{
+    --html-background: color(var(--background) blend(white 93%));
+    --border-color: color(var(--html-background) blend(white 95%));
+}}
+
+html, body {{
+    margin: 0;
+    padding: 0;
+    background-color: var(--html-background);
+    color: var(--foreground);
+}}
+
+h1, h2 {{
+    border-bottom: 1px solid var(--border-color);
+    font-weight: normal;
+    margin: 0;
+    padding: 0.5rem 0.6rem;
+}}
+
+p {{
+    margin: 0;
+    padding: 0.5rem;
+}}
+
+a {{
+    text-decoration: none;
+}}
+
+.Title {{
+    border-bottom: 1px solid var(--border-color);
+    font-weight: normal;
+    margin: 0.2rem;
+    padding: 0.5rem 0.8rem;
+    font-family: monospace;
+    font-stretch: 1.2;
+}}
+
+.Function {{
+    color: #FFEE55;
+    font-size: 1.5rem;
+}}
+
+.Spacer {{
+    margin: 0.5rem 0.8rem;
+}}
+
+.Package {{
+    color: #AADD55;
+    font-size: 1.2rem;
+}}
+
+.Usage {{
+    border-bottom: 1px solid var(--border-color);
+    font-weight: normal;
+    margin: 0.2rem;
+    padding: 0.5rem 0.8rem;
+    font-family: "Calibri";
+}}
+
+
