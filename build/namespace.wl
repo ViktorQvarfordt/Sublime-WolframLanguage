@@ -9,7 +9,7 @@ Monitor[
 			namespace[[i]] -> (ToExpression[namespace[[i]] <> "::usage"]),
 		{i, Length @ namespace}],
 	Message::name],
-	ProgressIndicator[i / Length @ namespace]
+	ProgressIndicator[i / Length@namespace]
 ];
 
 
@@ -19,5 +19,5 @@ Export[NotebookDirectory[] <> "usage-dict.json",
 
 
 Export[NotebookDirectory[] <> "usage-absent.json", Keys[
-	Select[usages, Head[Values[#]] =!= String && StringMatchQ[Keys[#], ("$" | _?UpperCaseQ) ~~ ___] &]
+	Select[usages, Head[Values[#]] =!= String &]
 ]];
