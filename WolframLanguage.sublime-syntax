@@ -55,6 +55,9 @@ contexts:
     - include: declarations
     - include: expressions
 
+  prototype:
+    - match: \\\r?\n
+
   expressions:
     - include: pattern
     - include: expressions-nopattern
@@ -126,7 +129,7 @@ contexts:
         - include: boxed
 
     # escape characters
-    - match: \\(["nrtbf\\]|\r?\n)
+    - match: \\["nrtbf\\]
       scope: constant.character.escape.wolfram
     - match: \\\.[0-9A-Fa-f]{2}|\\:[0-9A-Fa-f]{4}
       scope: constant.character.encoding.wolfram
