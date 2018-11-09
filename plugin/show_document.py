@@ -18,13 +18,11 @@ template = '''
 def get_document(name):
     if name not in usages:
         return "<p>No description available.</p>"
-    return '''<div class = "Title">
-        <span class = "Function">{0}</span>
-        <span class = "Spacer">&nbsp;</span>
-        <span class = "Package">{1}</span>
-    </div><p class = "Usage">
-        Here are some definitions.
-    </p>'''.format(name, '23333')
+    return '''<div class="title">
+        <span class="function">{0}</span>
+        <span class="spacer">&nbsp;</span>
+        <span class="package">{1}</span>
+    </div><p class="usage">{2}</p>'''.format(name, 'System', usages[name])
 
 def get_key_region_at(view, point):
     if view.match_selector(point, 'variable.function.wolfram'):
@@ -34,13 +32,7 @@ def get_key_region_at(view, point):
     return None
 
 class WlEventListener(sublime_plugin.ViewEventListener):
-
-    def on_query_completions(prefix, locations):
-        return [
-            ["me1\tmethod", "method1()"],
-            ["me2\tmethod", "method2()"]
-        ]
-
+    @classmethod
     def on_hover(self, point, hover_zone):
         if hover_zone != sublime.HOVER_TEXT: return
         key_region = get_key_region_at(self.view, point)

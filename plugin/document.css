@@ -31,7 +31,7 @@ a {{
     text-decoration: none;
 }}
 
-.Title {{
+.title {{
     border-bottom: 1px solid var(--border-color);
     font-weight: normal;
     margin: 0.2rem;
@@ -40,21 +40,21 @@ a {{
     font-stretch: 1.2;
 }}
 
-.Function {{
+.function {{
     color: #FFEE55;
     font-size: 1.5rem;
 }}
 
-.Spacer {{
+.spacer {{
     margin: 0.5rem 0.8rem;
 }}
 
-.Package {{
+.package {{
     color: #AADD55;
     font-size: 1.2rem;
 }}
 
-.Usage {{
+.usage {{
     border-bottom: 1px solid var(--border-color);
     font-weight: normal;
     margin: 0.2rem;
