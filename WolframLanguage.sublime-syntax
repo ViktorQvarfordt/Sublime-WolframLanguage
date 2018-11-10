@@ -62,6 +62,7 @@ contexts:
     - include: expressions
 
   prototype:
+    # ignore the following newline after a back-slant
     - match: \\\r?\n
 
   expressions:
@@ -135,7 +136,7 @@ contexts:
         - include: boxed
 
     # escape characters
-    - match: \\[nrtbf()"!^%&+_*@`/\\]
+    - match: \\[ !"%&()*+/@\\^_`bfnrt<>]
       scope: constant.character.escape.wolfram
     - match: |-
         (?x)(
@@ -155,9 +156,9 @@ contexts:
           \\:[0-9A-Fa-f]{0,3}(?=[^0-9A-Fa-f])
         )
       scope: invalid.character.encoding.wolfram
-    - match: \\\[\w+\]
+    - match: \\\[\w*\]
       scope: invalid.character.built-in.wolfram
-    - match: \\[a-zA-Z]
+    - match: \\[a-zA-Z\[]
       scope: invalid.character.escape.wolfram
 
   string:
