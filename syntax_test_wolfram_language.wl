@@ -18,8 +18,16 @@
 (* ^^^^^ constant.numeric *)
    11.11`
 (* ^^^^^^ constant.numeric *)
-   11.11`11.11
-(* ^^^^^^^^^^^ constant.numeric *)
+   11.11`11
+(* ^^^^^^^^ constant.numeric *)
+   11.11``11
+(* ^^^^^^^^^ constant.numeric *)
+   11^^11.11
+(* ^^^^^^^^^ constant.numeric *)
+   11.11*^11
+(* ^^^^^^^^^ constant.numeric *)
+   11^^11.11`11*^11
+(* ^^^^^^^^^^^^^^^^^ constant.numeric *)
 
 (* NUMERIC CONSTANTS *)
 
@@ -45,6 +53,8 @@
 (*^ keyword.operator.arithmetic*)
   *
 (*^ keyword.operator.arithmetic*)
+  ^
+(*^ keyword.operator.arithmetic*)
 
   !
 (*^ keyword.operator.logical*)
@@ -69,19 +79,19 @@
 (*^^^ keyword.operator.comparison*)
 
    @
-(* ^ keyword.operator *)
+(* ^ keyword.operator.call *)
    @@
-(* ^^ keyword.operator *)
+(* ^^ keyword.operator.call *)
    @@@
-(* ^^^ keyword.operator *)
+(* ^^^ keyword.operator.call *)
    @*
-(* ^^ keyword.operator *)
+(* ^^ keyword.operator.call *)
    /*
-(* ^^ keyword.operator *)
+(* ^^ keyword.operator.call *)
    /@
-(* ^^ keyword.operator *)
+(* ^^ keyword.operator.call *)
    /;
-(* ^^ keyword.operator *)
+(* ^^ keyword.operator.condition *)
    //
 (* ^^ keyword.operator *)
    /:
@@ -97,7 +107,13 @@
    <->
 (* ^^^ keyword.operator *)
 
+
 (* VARIABLES *)
+
+  %%%
+(*^^^ storage.type.Out *)
+  %12
+(*^^^ storage.type.Out *)
 
   f[x]
 (*^ variable.function*)
@@ -179,6 +195,9 @@
 
   f[x_] /; x > 0 := x
 (*^ entity.name.function  *)
+
+  f = Function[x, x ^ 2]
+(*^ entity.name.function *)
 
   f[[]]
 

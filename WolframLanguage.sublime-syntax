@@ -19,8 +19,9 @@ scope: source.wolfram
 # Partly based on https://github.com/JuliaEditorSupport/Julia-sublime/blob/master/Julia.sublime-syntax
 
 variables:
+  number: (?:\d+\.?|\.\d)\d*
   symbol: '[$[:alpha:]]+[$[:alnum:]]*'
-  identifier: (?:{{symbol}}`)*({{symbol}})
+  identifier: (?:{{symbol}}`)*{{symbol}}
 
   # Built-in functions
   built_in_functions: |-
@@ -90,14 +91,19 @@ contexts:
         pop: true
 
   literals:
-    - match: (?:\d+\.?|\.\d)\d*\`{0,2}
+    # numbers, with base, scientific notation, precision or accuracy
+    - match: ([0-9]+\^\^)?{{number}}(\`\`?{{number}})?(\*\^{{number}})?
       scope: constant.numeric.wolfram
+
+    # built-in symbols
     - match: ((?:System`)?{{built_in_numeric_constants}})
       scope: constant.numeric.wolfram
     - match: ((?:System`)?{{built_in_constants}})
       scope: constant.language.wolfram
     - match: ((?:System`)?{{built_in_options}})
       scope: variable.function.wolfram
+
+    # strings
     - match: \"
       scope: punctuation.definition.string.begin
       push:
@@ -115,6 +121,8 @@ contexts:
           scope: constant.other.placeholder.wolfram
 
   shorthand:
+    - match: '%(\d*|%*)'
+      scope: storage.type.Out.wolfram
     - match: (::)\s*([[:alnum:]]+)
       captures:
         1: keyword.operator.MessageName.wolfram
@@ -136,9 +144,9 @@ contexts:
       scope: keyword.operator.logical.wolfram
     - match: (:?=|\/:|[-:]>|[+\-*/]=|<->)
       scope: keyword.operator.assignment.wolfram
-    - match: '\/;'
+    - match: \/;
       scope: keyword.operator.condition.wolfram
-    - match: (\+\+|--|[+\-*/])
+    - match: (\+\+|--|[+\-*/^])
       scope: keyword.operator.arithmetic.wolfram
     - match: (>>>?|<<<?)
       scope: keyword.operator.flow.wolfram
@@ -146,14 +154,14 @@ contexts:
       scope: keyword.operator.string.wolfram
     - match: \.\.\.?
       scope: keyword.operator.repeat.wolfram
-    - match: ';;'
+    - match: ;;
       scope: keyword.operator.span.wolfram
-    - match: ';'
+    - match: ;
       scope: keyword.operator.compound.wolfram
     - match: \\\[[[:alnum:]]+\]
       scope: keyword.operator.word.wolfram
     - match: '&'
-      scope: keyword.operator.function.wolfram
+      scope: keyword.operator.function variable.function.wolfram
 
   pattern-short:
     # Including Blank, BlankSequence, BlankNullSequence
@@ -278,8 +286,10 @@ contexts:
             - include: sequence
         - match: (?=[^\[])
           pop: true
-    - match: ((?:{{symbol}}`)*(\${{symbol}}))(?=\s*:?=)
-      scope: entity.name.constant.wolfram
+    # - match: ((?:{{symbol}}`)*(\${{symbol}}))(?=\s*:?=)
+    #   scope: entity.name.constant.wolfram
+    - match: ({{identifier}})(?=\s*:?=\s*Function\s*\[(?!\s*\[))
+      scope: entity.name.function.wolfram
 
   sequence:
     - meta_scope: meta.sequence.wolfram
