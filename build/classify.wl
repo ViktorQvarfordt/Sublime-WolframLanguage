@@ -20,28 +20,38 @@ writeFile["../completions.sublime-completions", toJSON[{
 }]];
 
 
+classificationRules = <|
+	"functions" -> (StringStartsQ["\!\(\*RowBox"]),
+	"options" -> (StringContainsQ[RegularExpression["is an? (\\w+ )?option"]]),
+	"constants" -> (True &)
+|>;
 classifiedNamespace = Last @ Reap[
-	Sow[Keys[#], Switch[Values[#],
-		_?(StringStartsQ["\!\(\*RowBox"]), "functions",
-		_?(StringContainsQ[RegularExpression["is an? (\\w+ )?option"]]), "options",
-		_, "constants"
-	]]& /@ wl`usageDictionary,
+	Function[rule, Sow[
+		Keys[rule],
+		Piecewise[KeyValueMap[
+			{#1, #2[Values[rule]]}&,
+			classificationRules
+		]]
+	]] /@ wl`usageDictionary,
 	_,
 	Rule
 ];
+replacement[prefixes_, symbols_] := RuleDelayed[
+	prefix: StringExpression @@ Riffle[prefixes, Whitespace, {2, -1, 2}] ~~ (WordCharacter | "$" | "|")..,
+	prefix <> StringRiffle[StringReplace["$" -> "\\$"] /@ symbols, "|"]
+]
 
 
 writeFile["../WolframLanguage.sublime-syntax", StringReplace[
 	readFile["../WolframLanguage.sublime-syntax"],
-	RuleDelayed[
-		prefix: StringExpression[
-			"built_in_" ~~ # ~~ ": |-" ~~ Whitespace,
-			"(?x)" ~~ Whitespace,
-			"\\b(?:" ~~ Whitespace
-		] ~~ (WordCharacter | "$" | "|")..,
-		prefix <> StringRiffle[StringReplace["$" -> "\\$"] /@ (# /. classifiedNamespace), "|"]
-	]& /@ {"functions", "options", "constants"}
+	{
+		Sequence @@ (replacement[
+			{"built_in_" ~~ # ~~ ": |-", "(?x)", "\\b(?:"},
+			# /. classifiedNamespace
+		]& /@ Keys @ classificationRules),
+		replacement[{"named_characters:"}, wl`namedCharacters]
+	}
 ]];
 
 
-Export[resolveFileName["../plugin/usages.json"], wl`usageDictionary];
+Export[resolveFileName["usages.json"], wl`usageDictionary];

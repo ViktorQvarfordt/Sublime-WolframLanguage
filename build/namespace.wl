@@ -20,6 +20,20 @@ usageDictionary = Select[usages, Head[Values[#]] === String &];
 usageAbsentSymbols = Keys @ Select[usages, Head[Values[#]] =!= String &];
 
 
+getAtomic[expr_, orders_List] := If[Length @ orders == 0,
+	expr,
+	getAtomic[Level[expr, 1][[orders[[1]]]], Rest @ orders]
+];
+
+
+namedCharacters = StringTake[getAtomic[#, {1, 1, -1, 1}], {3, -2}]& /@ Import[FileNameJoin[{
+	$InstallationDirectory,
+	"Documentation",
+	$Language,
+	"System/Guides/ListingOfNamedCharacters.nb"
+}], {"Cells", "GuideText"}];
+
+
 DumpSave[NotebookDirectory[] <> "wldata.mx", "wl`"];
 
 
