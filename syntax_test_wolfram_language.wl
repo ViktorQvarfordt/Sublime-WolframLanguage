@@ -218,6 +218,34 @@
 (*             ^^ keyword.operator.x-scriptBox *)
 (*                           ^^ constant.character.escape.wolfram *)
 
+  RegularExpression["^a\n.+?\\^[^a-f*]{2,}"]
+(*                   ^ keyword.control.anchors.regexp *)
+(*                    ^ string.quoted *)
+(*                     ^^ constant.character.escape *)
+(*                       ^ keyword.other.any.regexp *)
+(*                        ^^ keyword.other.qualifier.regexp *)
+(*                          ^^^ constant.character.escape.regexp  *)
+(*                             ^^^^^^^ meta.set.regexp *)
+(*                             ^^ keyword.control.set.regexp *)
+(*                               ^^^ constant.other.range.regexp *)
+(*                                  ^ string.quoted *)
+(*                                   ^ keyword.control.set.regexp *)
+(*                                    ^^^^ keyword.other.qualifier.regexp *)
+
+  RegularExpression["(?=[^[:alpha:]](\\d*))\\g1\\2"]
+(*                   ^^^^^^^^^^^^^^^^^^^^^^ meta.group.regexp *)
+(*                   ^ keyword.control.group.regexp *)
+(*                    ^^ constant.character.assertion.regexp *)
+(*                      ^^^ storage.class.character.regexp *)
+(*                         ^^^^^^^ constant.other.class.regexp *)
+(*                                ^^ storage.class.character.regexp *)
+(*                                  ^^^^^^ meta.group.regexp *)
+(*                                  ^ keyword.control.group.regexp *)
+(*                                   ^^^ storage.class.character.regexp *)
+(*                                      ^ keyword.other.qualifier.regexp *)
+(*                                       ^^ keyword.control.group.regexp *)
+(*                                         ^^^^^^^ storage.other.reference.regexp *)
+
 
 (* COMMENTS *)
 

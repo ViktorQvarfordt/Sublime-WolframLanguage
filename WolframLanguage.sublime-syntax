@@ -53,6 +53,8 @@ variables:
 
   string_template_functions: StringTemplate|TemplateApply
 
+  character_class: alnum|alpha|ascii|blank|cntrl|digit|graph|lower|print|punct|space|upper|word|xdigit
+
   nb_code_styles: (Input)
 
 contexts:
@@ -119,10 +121,6 @@ contexts:
       push: string
 
   general-string:
-    - match: \"
-      scope: string.quoted.wolfram punctuation.definition.string.end
-      pop: true
-
     # box representation
     - match: \\!\\\(
       scope: keyword.operator.string-box.wolfram
@@ -162,11 +160,17 @@ contexts:
       scope: invalid.character.escape.wolfram
 
   string:
+    - match: \"
+      scope: string.quoted.wolfram punctuation.definition.string.end
+      pop: true
     - include: general-string
     - match: '[\s\S]'
       scope: string.quoted.wolfram
 
   templated-string:
+    - match: \"
+      scope: string.quoted.wolfram punctuation.definition.string.end
+      pop: true
     - include: general-string
     - match: \`\w*\`
       scope: variable.parameter.wolfram
@@ -180,6 +184,64 @@ contexts:
           pop: true
         - include: inside-string
         - include: expressions
+    - match: '[\s\S]'
+      scope: string.quoted.wolfram
+
+  regular-expression:
+    - match: \"
+      scope: string.quoted.wolfram punctuation.definition.string.end
+      pop: true
+    - include: inside-regular-expression
+
+  inside-regular-expression:
+    - match: (?=")
+      pop: true
+    - match: \\\\[dDsSwW]
+      scope: storage.class.character.regexp.wolfram
+    - match: (\[\^?\[)(:(?:{{character_class}}):)(\]\])
+      captures:
+        1: storage.class.character.regexp.wolfram
+        2: constant.other.class.regexp.wolfram
+        3: storage.class.character.regexp.wolfram
+    - match: \\\\g?[1-9]+
+      scope: storage.other.reference.regexp.wolfram
+    - match: \(\?-?[ims]\)
+      scope: storage.modifier.mode.regexp.wolfram
+    - match: \.
+      scope: keyword.other.any.regexp.wolfram
+    - match: ([$^]|\\\\[bB])
+      scope: keyword.control.anchors.regexp.wolfram
+    - match: \|
+      scope: keyword.operator.alternation.regexp.wolfram
+    - match: ([?+*]|{[0-9]*,[0-9]+}|{[0-9]+,[0-9]*})
+      scope: keyword.other.qualifier.regexp.wolfram
+    - match: \[\^?
+      scope: keyword.control.set.regexp.wolfram
+      push:
+        - meta_scope: meta.set.regexp.wolfram
+        - match: \]
+          scope: keyword.control.set.regexp.wolfram
+          pop: true
+        - match: (?=")
+          pop: true
+        - match: .-.
+          scope: constant.other.range.regexp.wolfram
+        - include: general-string
+        - match: '[\s\S]'
+          scope: string.quoted.wolfram
+    - match: (\()(\?([:=!]|<[=!]))?
+      captures:
+        1: keyword.control.group.regexp.wolfram
+        2: constant.character.assertion.regexp.wolfram
+      push:
+        - meta_scope: meta.group.regexp.wolfram
+        - match: \)
+          scope: keyword.control.group.regexp.wolfram
+          pop: true
+        - include: inside-regular-expression
+    - match: \\\\[\S]
+      scope: constant.character.escape.regexp.wolfram
+    - include: general-string
     - match: '[\s\S]'
       scope: string.quoted.wolfram
 
@@ -278,6 +340,21 @@ contexts:
         - match: \"
           scope: string.quoted.wolfram punctuation.definition.string.begin
           push: templated-string
+        - match: \]
+          scope: punctuation.section.brackets.end.wolfram
+          pop: true
+        - include: expressions
+
+    # regular expression function
+    - match: (RegularExpression)\s*(\[(?!\[))
+      captures:
+        1: variable.function.template.wolfram
+        2: punctuation.section.brackets.begin.wolfram
+      push:
+        - meta_scope: meta.block.wolfram
+        - match: \"
+          scope: string.quoted.wolfram punctuation.definition.string.begin
+          push: regular-expression
         - match: \]
           scope: punctuation.section.brackets.end.wolfram
           pop: true
