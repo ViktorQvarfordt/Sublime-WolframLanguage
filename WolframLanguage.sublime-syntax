@@ -135,7 +135,7 @@ contexts:
         - include: boxed
 
     # escape characters
-    - match: \\[-"nrtbf()!^%&+_*@`/\\]
+    - match: \\[nrtbf()"!^%&+_*@`/\\]
       scope: constant.character.escape.wolfram
     - match: |-
         (?x)(
