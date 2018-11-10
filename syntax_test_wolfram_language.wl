@@ -132,8 +132,17 @@
   Image[Red, Interleaving -> True]
 (*^^^^^ variable.function *)
 (*      ^ constant.language *)
-(*           ^^^^^^^^^^^^ variable.function.wolfram *)
+(*           ^^^^^^^^^^^^ variable.parameter *)
 (*                        ^^ keyword.operator *)
+
+  Sum[x, {x, 1, 100}]
+(*        ^ variable.parameter *)
+
+  Map[func, list]
+(*    ^^^^ variable.function *)
+
+  TakeWhile[list, func]
+(*                ^^^^ variable.function *)
 
   a ~ f ~ b ~ g ~ c
 (*    ^ variable.function *)

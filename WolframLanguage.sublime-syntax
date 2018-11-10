@@ -300,7 +300,7 @@ contexts:
         1: punctuation.section.braces.begin.wolfram
         2: variable.parameter.wolfram
       push: meta-parameter
-    - match: (?=[\s\S])
+    - match: (?=\S)
       pop: true
 
   localized:
