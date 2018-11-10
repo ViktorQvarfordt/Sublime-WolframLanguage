@@ -187,15 +187,22 @@
   "This is\n\a string. (* not a comment *)"
 (*^ punctuation.definition.string.begin *)
 (*        ^^ constant.character.escape *)
-(*          ^^ string.quoted *)
+(*          ^^ invalid.character.escape *)
 (*                     ^^^^^^^^^^^^^^^^^^^ string.quoted *)
 
-  "\[alpha]"
+  "\[Alpha] \[alpha]"
 (* ^^^^^^^^ constant.character.built-in.wolfram *)
+(*          ^^^^^^^^ invalid.character.built-in.wolfram *)
 
-  "\:123456\.7890"
+  "\:123456\.7890\12345"
 (* ^^^^^^ constant.character.encoding.wolfram *)
 (*         ^^^^ constant.character.encoding.wolfram *)
+(*               ^^^^ constant.character.encoding.wolfram *)
+
+  "\:1 \.2 \34"
+(* ^^^ invalid.character.encoding.wolfram *)
+(*     ^^^ invalid.character.encoding.wolfram *)
+(*         ^^^ invalid.character.encoding.wolfram *)
 
   foo::bar = "message"
 (*   ^^ keyword.operator.MessageName *)
@@ -209,7 +216,7 @@
   "box 1: \!\(x\^2\); box 2: \(y\^3\) "
 (*        ^ keyword.operator.string-box *)
 (*             ^^ keyword.operator.x-scriptBox *)
-(*                           ^^^^^^^^ string.quoted *)
+(*                           ^^ constant.character.escape.wolfram *)
 
 
 (* COMMENTS *)
