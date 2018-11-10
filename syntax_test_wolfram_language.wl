@@ -131,9 +131,13 @@
 
   Image[Red, Interleaving -> True]
 (*^^^^^ variable.function *)
-(*      ^ constant.language *) (* seems wrong to me *)
+(*      ^ constant.language *)
 (*           ^^^^^^^^^^^^ variable.function.wolfram *)
 (*                        ^^ keyword.operator *)
+
+  a ~ f ~ b ~ g ~ c
+(*    ^ variable.function *)
+(*            ^ variable.function *)
 
 (* PATTERNS *)
 
@@ -197,6 +201,9 @@
 (*^ entity.name.function  *)
 
   f = Function[x, x ^ 2]
+(*^ entity.name.function *)
+
+  f = # ^ 2 &;
 (*^ entity.name.function *)
 
   f[[]]
