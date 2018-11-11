@@ -10,7 +10,6 @@ file_extensions:
   - m
   - wl
   - wls
-  # FIXME: special process when rendering .nb file
   - nb
 
 first_line_match: ^#!.*\b(math|wolfram).*$
@@ -160,7 +159,7 @@ contexts:
         - include: expressions
 
     # Postfix and compound functions
-    - match: (//|@\*)\s*({{identifier}})
+    - match: (//|[@/]\*)\s*({{identifier}})
       captures:
         1: keyword.operator.call.wolfram
         2: variable.function.wolfram
