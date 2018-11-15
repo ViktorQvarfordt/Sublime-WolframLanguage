@@ -99,16 +99,35 @@ contexts:
       push: comment-block
 
   comment-block:
-      - meta_scope: comment.block.wolfram
-      - match: \(\*
-        push: comment-block
-      - match: \*\)
-        pop: true
+    - meta_scope: comment.block.wolfram
+    - match: \(\*
+      push: comment-block
+    - match: \*\)
+      pop: true
 
   literals:
-    # numbers, with base, scientific notation, precision or accuracy
-    - match: ([0-9]+\^\^)?{{number}}(\`\`?({{number}})?)?(\*\^{{number}})?
-      scope: constant.numeric.wolfram
+    - match: |-
+        (?x)
+        (?:
+          ([1-9]\d*\^\^)                                  # base
+          ((?:[[:alnum:]]+\.?|\.[[:alnum:]])[[:alnum:]]*) # value
+          |
+          ({{number}})                                    # value
+        )
+        (?:
+          (\`\`(?:{{number}})?)                           # accuracy
+          |
+          (\`(?:{{number}})?)                             # precision
+        )?
+        (\*\^[+-]?{{number}})?                            # exponent
+      scope: meta.numeric.wolfram
+      captures:
+        1: constant.numeric.base.wolfram
+        2: constant.numeric.wolfram
+        3: constant.numeric.wolfram
+        4: constant.numeric.accuracy.wolfram
+        5: constant.numeric.precision.wolfram
+        6: constant.numeric.exponent.wolfram
 
     # built-in symbols
     - match: ((?:System`)?{{built_in_numeric_constants}})

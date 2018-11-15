@@ -8,26 +8,24 @@
 
 (* NUMBERS *)
 
-   11
-(* ^^ constant.numeric *)
-   .11
-(* ^^^ constant.numeric *)
-   11.
-(* ^^^ constant.numeric *)
-   11.11
-(* ^^^^^ constant.numeric *)
-   11.11`
-(* ^^^^^^ constant.numeric *)
-   11.11`11
-(* ^^^^^^^^ constant.numeric *)
-   11.11``11
-(* ^^^^^^^^^ constant.numeric *)
-   11^^11.11
-(* ^^^^^^^^^ constant.numeric *)
-   11.11*^11
-(* ^^^^^^^^^ constant.numeric *)
-   11^^11.11`11*^11
-(* ^^^^^^^^^^^^^^^^^ constant.numeric *)
+  11`
+(*^^ constant.numeric *)
+(*  ^ constant.numeric.precision *)
+  11.`11
+(*^^^ constant.numeric *)
+(*   ^^^ constant.numeric.precision *)
+  .11``
+(*^^^ constant.numeric *)
+(*   ^^ constant.numeric.accuracy *)
+  11.11``
+(*^^^^^ constant.numeric *)
+(*     ^^ constant.numeric.accuracy *)
+  11^^1a
+(*^^^^ constant.numeric.base *)
+(*    ^^ constant.numeric *)
+  11.11*^-11
+(*^^^^^ constant.numeric.wolfram *)
+(*     ^^^^^ constant.numeric.exponent *)
 
 (* NUMERIC CONSTANTS *)
 
