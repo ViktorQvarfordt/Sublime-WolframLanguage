@@ -47,25 +47,7 @@ variables:
       Catalan|Degree|E|EulerGamma|Glaisher|GoldenAngle|GoldenRatio|I|Khinchin|MachinePrecision|Pi
     )\b
 
-  first_param_functional_functions: |-
-    (?x)
-    Apply|ArrayFilter|
-    BlockMap|
-    FixedPoint|FixedPointList|Fold|FoldList|FoldPair|FoldPairList|
-    Map|MapAt|MapIndexed|MapThread|
-    Nest|NestList|NestGraph|NestWhile|NestWhileList|
-    Scan|SequenceFold|SequenceFoldList
-
-  last_param_functional_functions: |-
-    (?x)
-    CountDistinctBy|LengthWhile|TakeWhile
-
-  parametic_functions: Table|Do|Sum|Product
-
-  scoping_functions: Block|Module|With|Function
-
-  nb_code_styles: (Input)
-
+  scoping_functions: Block|Module|With|Function|DynamicModule
 
 contexts:
 
@@ -82,7 +64,6 @@ contexts:
     - include: literals
     - include: shorthand
     - include: operators
-    - include: pattern-short
     - include: function
     - include: variable
     - include: nested
@@ -215,29 +196,11 @@ contexts:
     - match: \?\??
       scope: keyword.operator.definition.wolfram
 
-  pattern-short:
-    # support Blank, BlankSequence, BlankNullSequence
-    # can also be matched with Pattern, PatternTest, Optional
-    - match: ({{identifier}})?(_{1,3})(({{identifier}})?)
-      scope: variable.parameter.wolfram
-      push:
-        - meta_scope: meta.pattern.blank.wolfram
-        - match: (?:\s*)(\?)
-          captures:
-            1: keyword.operator.PatternTest.wolfram
-          pop: true
-        - match: (?:\s*)(:)(?=[^:>=])
-          captures:
-            1: keyword.operator.Optional.wolfram
-          pop: true
-        - match: (?=.)
-          pop: true
-
   pattern:
     - match: ({{identifier}})\s*(:(?=[^:>=]))
       captures:
         1: variable.parameter.wolfram
-        3: keyword.operator.Pattern.wolfram
+        2: keyword.operator.Pattern.wolfram
       push:
         - meta_content_scope: meta.pattern.wolfram
         - match: \?
@@ -251,26 +214,47 @@ contexts:
         - include: expressions-nopattern
 
   variable:
+    # parameters
+    - match: |-
+        (?x)
+        ({{identifier}})?
+        (?:
+          (_{1,3})            # Blank, BlankSequence, BlankNullSequence
+          ({{identifier}})?   # Head
+          |
+          (_\.)               # Default
+        )
+      scope: meta.parameter.wolfram
+      captures:
+        1: variable.parameter.wolfram
+        2: variable.parameter.blank.wolfram
+        3: variable.parameter.head.wolfram
+        4: variable.parameter.default.wolfram
+      push:
+        - match: (?:\s*)(\?)                          # PatternTest
+          scope: meta.pattern.wolfram
+          captures:
+            1: keyword.operator.PatternTest.wolfram
+          pop: true
+        - match: (?:\s*)(:)(?=[^:>=])                 # Optional
+          scope: meta.pattern.wolfram
+          captures:
+            1: keyword.operator.Optional.wolfram
+          pop: true
+        - match: (?=.)
+          pop: true
+    
+    # variables
     - match: (?:System`)?({{built_in_functions}})
       scope: variable.function
     - match: '{{identifier}}'
       scope: variable.other
+
+    # slots
     - match: (#[a-zA-Z][[:alnum:]]*|#\d*)
       scope: variable.parameter
 
   function:
-    # parametic functions
-    - match: ({{parametic_functions}})\s*(\[(?!\[))
-      captures:
-        1: variable.function.parametic.wolfram
-        2: punctuation.section.brackets.begin.wolfram
-      push:
-        - meta_content_scope: meta.block.wolfram
-        - match: ','
-          scope: punctuation.separator.sequence.wolfram
-          push: parameter
-        - include: meta-block
-
     # scoping functions
     - match: ({{scoping_functions}})\s*(\[(?!\[))
       captures:
@@ -283,26 +267,6 @@ contexts:
           set: [localized, local]
         - include: meta-block
 
-    # functional functions
-    - match: ({{first_param_functional_functions}})\s*(\[)\s*({{identifier}})
-      captures:
-        1: variable.function.scoping.wolfram
-        2: punctuation.section.brackets.begin.wolfram
-        3: variable.function.wolfram
-      push: meta-block
-    - match: ({{last_param_functional_functions}})\s*(\[(?!\[))
-      captures:
-        1: variable.function.scoping.wolfram
-        2: punctuation.section.brackets.begin.wolfram
-      push:
-        - meta_content_scope: meta.block.wolfram
-        - match: ({{identifier}})\s*\]
-          captures:
-            1: variable.function.wolfram
-            2: punctuation.section.brackets.end.wolfram
-          pop: true
-        - include: meta-block
-
     # general functions
     - match: ({{identifier}})\s*(\[(?!\[))
       captures:
@@ -311,15 +275,6 @@ contexts:
       push: meta-block
     - match: ({{identifier}})\s*(?=@{1,3}|//?@)
       scope: variable.function.wolfram
-
-  parameter:
-    - match: (\{)\s*({{symbol}})
-      captures:
-        1: punctuation.section.braces.begin.wolfram
-        2: variable.parameter.wolfram
-      push: meta-parameter
-    - match: (?=\S)
-      pop: true
 
   localized:
     - meta_content_scope: meta.block.local.wolfram
@@ -346,7 +301,6 @@ contexts:
     - match: (?=[\,|\}])
       pop: true
     - include: expressions
-
 
   declarations:
     - match: |-

@@ -148,27 +148,28 @@
 
 (* PATTERNS *)
 
-  var_head  foo
-(*^^^^^^^^ meta.pattern.blank.wolfram variable.parameter.wolfram *)
-(*          ^ variable.other *)
+  _.
+(*^^ variable.parameter.default *)
 
-  var_head:foo
-(*^^^^^^^^ meta.pattern.blank.wolfram variable.parameter.wolfram *)
-(*        ^ meta.pattern.blank.wolfram keyword.operator.Optional.wolfram *)
-(*         ^^^ variable.other *)
+  var_head
+(*^^^^^^^^ meta.parameter *)
+(*^^^^ variable.parameter *)
+(*    ^^^^ variable.parameter.head *)
 
-  var_head ? EvenQ
-(*^^^^^^^^ meta.pattern.blank.wolfram variable.parameter.wolfram *)
-(*         ^ meta.pattern.blank.wolfram keyword.operator.PatternTest.wolfram *)
-(*           ^^^^^ variable.function *)
+  var__head : foo
+(*         ^ meta.pattern keyword.operator.Optional *)
+
+  var___head ? EvenQ
+(*           ^ meta.pattern keyword.operator.PatternTest *)
 
   var: patt ? EvenQ : foo
-(*^^^ variable.parameter.wolfram *)
-(*   ^ keyword.operator.Pattern.wolfram *)
-(*      ^^^ meta.pattern.wolfram variable.other *)
-(*          ^ meta.pattern.wolfram keyword.operator.PatternTest.wolfram *)
-(*            ^^^^^ meta.pattern.wolfram variable.function *)
-(*                  ^ keyword.operator.Optional.wolfram *)
+(*^^^ variable.parameter *)
+(*   ^ keyword.operator.Pattern *)
+(*     ^^^^^^^^^^^^ meta.pattern *)
+(*     ^^^^ variable.other*)
+(*          ^ keyword.operator.PatternTest *)
+(*            ^^^^^ variable.function *)
+(*                  ^ keyword.operator.Optional *)
 (*                    ^^^ variable.other *)
 
 
