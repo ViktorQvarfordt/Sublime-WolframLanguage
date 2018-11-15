@@ -219,17 +219,17 @@ contexts:
         (?x)
         ({{identifier}})?
         (?:
+          (_\.)               # Default
+          |
           (_{1,3})            # Blank, BlankSequence, BlankNullSequence
           ({{identifier}})?   # Head
-          |
-          (_\.)               # Default
         )
       scope: meta.parameter.wolfram
       captures:
         1: variable.parameter.wolfram
-        2: variable.parameter.blank.wolfram
-        3: variable.parameter.head.wolfram
-        4: variable.parameter.default.wolfram
+        2: variable.parameter.default.wolfram
+        3: variable.parameter.blank.wolfram
+        4: variable.parameter.head.wolfram
       push:
         - match: (?:\s*)(\?)                          # PatternTest
           scope: meta.pattern.wolfram
