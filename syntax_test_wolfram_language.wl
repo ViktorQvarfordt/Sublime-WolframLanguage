@@ -17,9 +17,9 @@
   .11``
 (*^^^ constant.numeric *)
 (*   ^^ constant.numeric.accuracy *)
-  11.11``
+  11.11``11
 (*^^^^^ constant.numeric *)
-(*     ^^ constant.numeric.accuracy *)
+(*     ^^^^ constant.numeric.accuracy *)
   11^^1a
 (*^^^^ constant.numeric.base *)
 (*    ^^ constant.numeric *)
@@ -153,11 +153,12 @@
 
   var_head
 (*^^^^^^^^ meta.parameter *)
-(*^^^^ variable.parameter *)
+(*^^^ variable.parameter *)
+(*   ^ variable.parameter.blank *)
 (*    ^^^^ variable.parameter.head *)
 
   var__head : foo
-(*         ^ meta.pattern keyword.operator.Optional *)
+(*          ^ meta.pattern keyword.operator.Optional *)
 
   var___head ? EvenQ
 (*           ^ meta.pattern keyword.operator.PatternTest *)
