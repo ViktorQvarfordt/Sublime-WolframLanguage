@@ -4,44 +4,22 @@
 << (NotebookDirectory[] <> "utilities.wl");
 
 
-(* ::Subsubsection::Closed:: *)
-(*Usages*)
+$dataset = Association[wl`documentedLists];
+AssociateTo[$dataset, "built_in_undocumented_symbols" -> wl`usageAbsentSymbols];
 
 
-Export[util`resolveFileName["usages.json"], wl`usageDictionary];
-
-
-(* ::Subsubsection::Closed:: *)
-(*Completions*)
-
-
-util`writeFile["../completions.sublime-completions", util`toJSON[{
-	"scope" -> "source.wolfram",
-	"completions" -> Sort[StringReplace[StartOfString ~~ "$" -> ""] /@ wl`namespace]
-}]];
-
-
-(* ::Subsubsection:: *)
-(*Syntaxes*)
-
-
-classify[usages_, rules_] := Last @ Reap[
-	Function[usage, Sow[
-		Keys[usage],
-		Piecewise[KeyValueMap[
-			{#1, #2[Values[usage]]}&,
-			rules
-		]]
-	]] /@ usages,
+classify[usages_, func_Function] := Last @ Reap[
+	Sow[Keys[#], func[Values[#]]] & /@ usages,
 	_String,
 	Rule
-] // (AssociateTo[$dataset, #]; #)&;
+] // (AssociateTo[$dataset, #]; #) &;
+
+classify[usages_, rules_Association] := classify[usages,
+	Function[usage, Piecewise @ KeyValueMap[{#1, #2[usage]} &, rules]]
+];
 
 
-$dataset = <|"named_characters" -> wl`namedCharacters|>;
-
-
-classifiedNamespace = classify[wl`usageDictionary, <|
+classifiedNamespace = classify[Keys[#] -> "Definition" /. Values[#] & /@ wl`usageDictionary, <|
 	"built_in_functions" -> StringStartsQ["\!\(\*RowBox[{"],
 	"built_in_options" -> StringContainsQ[RegularExpression["is an? (\\w+ )?option"]],
 	"built_in_constants" -> (True &)
@@ -49,50 +27,46 @@ classifiedNamespace = classify[wl`usageDictionary, <|
 
 
 getLines[name_] := Select[StringStartsQ[
-	"\!\(\*RowBox[{" ~~ Repeated["\"", {0, 1}] ~~ name
-]] @ StringCases[RegularExpression["(\!\(\*([^\)]+)\)|.)+"]] @ (name /. wl`usageDictionary);
+	"\!\(\*RowBox[{" ~~ ("\"" | "") ~~ name
+]] @ StringCases[RegularExpression["(\!\(\*([^\)]+)\)|.)+"]][
+	"Definition" /. (name /. wl`usageDictionary)
+];
 
 getArguments[usage_] := usage //
-	StringCases[#, RegularExpression["\!\(\*([^\)]+)\)"] -> "$1", 1]&
+	StringCases[#, RegularExpression["\!\(\*([^\)]+)\)"] -> "$1", 1]& //
 	First //
 	ToExpression //
 	util`getAtomic[{1}] //
-	If[Length @ # <= 3, {}, getAtomic[#, {3, 1}]]& //
-	If[Head @ # === List, getAtomic[{1}] /@ Take[#, {1, -1, 2}], {#}]&;
+	If[Length[#] <= 3, {}, util`getAtomic[{3, 1}][#]]& //
+	If[ListQ[#], util`getAtomic[{1}] /@ Take[#, {1, -1, 2}], {#}]&;
 
-functionArguments = util`ruleMap[getArguments /@ getLines[#]&, "built_in_functions" /. classifiedNamespace];
+functionArguments = util`ruleMap[
+	getArguments /@ getLines[#]&,
+	"built_in_functions" /. classifiedNamespace
+];
 
 
-testAll[crit_, sel_: Identity] := Length[#] > 0 && AllTrue[#, Length[#] > 0 && crit[sel[#]] &] &;
-
-
-isFunctional[arg_] := arg === "f" || arg === "crit";
+testOne[crit_] := Length[#] > 0 && AllTrue[#, crit] &;
+testAll[crit_, sel_: Identity] := testOne[Length[#] > 0 && crit[sel[#]] &];
+isFunctional[arg_] := arg === "f" || arg === "crit" || arg === "test";
 
 classify[functionArguments, <|
-	"functional_rest_param" -> testAll[testAll[isFunctional], Rest], (* not found? *)
 	"functional_first_param" -> testAll[isFunctional, First],
 	"functional_last_param" -> testAll[isFunctional, Last]
 |>];
 
 
-isParametic[list_] := With[{sym = list[[1]][[1]]},
-	StringLength[sym] === 1 &&
-	MatchQ[Take[list, {3, -1, 2}], {
-		SubscriptBox[StyleBox[sym, "TI"], StyleBox["min", "TI"]],
-		SubscriptBox[StyleBox[sym, "TI"], StyleBox["max", "TI"]]
-	}]
+classify[Keys[#] -> "LocalVariables" /. Values[#] & /@ wl`usageDictionary,
+	If[ListQ[#],
+		"local_variables_" <> With[{pos = #[[2]]},
+			If[Length[pos] == 1,
+				"at_" <> ToString[pos[[1]]],
+				"from_" <> ToString[pos[[1]]] <> "_to_" <> ToString[pos[[2]]]
+			]
+		],
+		Null
+	] &
 ];
-
-classify[functionArguments, <|
-	"parametic_rest_param" -> (testAll[testAll[isParametic]] @ Cases[
-		Cases[#, args_?(Length[#] > 0 &) :> Last[args]],
-		args: {{"{", RowBox[{StyleBox[_String, "TI"], __}], "}"}..} :> (#[[2]][[1]] & /@ args)
-	] &),
-	"parametic_last_param" -> (testAll[isParametic] @ Cases[
-		Cases[#, args_?(Length[#] > 0 &) :> Last[args]],
-		{"{", RowBox[list: {StyleBox[_String, "TI"], __}], "}"} :> list
-	] &)
-|>];
 
 
 util`replaceFile["../WolframLanguage.sublime-syntax", KeyValueMap[RuleDelayed[

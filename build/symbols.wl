@@ -7,31 +7,36 @@ Begin["wl`"];
 
 
 namespace = Select[Names["System`*"], PrintableASCIIQ];
-namespaceSize = Length[namespace];
+
+Function[usages,
+	usageDictionary = Select[usages, Head["Definition" /. Values[#]] === String &];
+	usagePresentSymbols = Keys @ usageDictionary;
+	usageAbsentSymbols = Complement[namespace, usagePresentSymbols];
+] @ util`ruleMap[Block[{symbol = Symbol[#]},
+	Join[SyntaxInformation[symbol], {
+		"Definition" -> MessageName[Evaluate[symbol], "usage"],
+		"Attributes" -> Attributes[Evaluate[symbol]]
+	}]
+] &, namespace];
 
 
-Monitor[Quiet[
-	usages = Table[
-		namespace[[i]] -> ToExpression[namespace[[i]] <> "::usage"],
-		{i, namespaceSize}
-	], Message::name],
-	ProgressIndicator[i / namespaceSize]
-];
-
-
-usageDictionary = Select[usages, Head[Values[#]] === String &];
-usageAbsentSymbols = Keys @ Select[usages, Head[Values[#]] =!= String &];
-
-
-namedCharacters = StringTake[getAtomic[#, {1, 1, -1, 1}], {3, -2}]& /@ Import[FileNameJoin[{
-	$InstallationDirectory,
-	"Documentation",
-	$Language,
-	"System/Guides/ListingOfNamedCharacters.nb"
-}], {"Cells", "GuideText"}];
+documentedLists = Keys[#] -> Values[#] /@ util`getGuideText[util`toCamel[Keys[#]]] & /@ {
+	"listing_of_named_characters" -> (StringTake[#, {3, -2}]&) @* util`getAtomic[{1, 1, -1, 1}],
+	"listing_of_supported_external_services" -> util`getAtomic[{1, 1, 1, 1, 1, 1, 1, 1, 1}],
+	"listing_of_all_formats" -> util`getAtomic[{1, 1, 1, 1, 1, 1, 1, 1, 1}]
+};
 
 
 DumpSave[NotebookDirectory[] <> "wldata.mx", "wl`"];
+
+
+Export[util`resolveFileName["usages.json"], wl`usageDictionary];
+
+
+util`writeFile["../completions.sublime-completions", util`toJSON[{
+	"scope" -> "source.wolfram",
+	"completions" -> Sort[StringReplace[StartOfString ~~ "$" -> ""] /@ wl`namespace]
+}]];
 
 
 End[];
