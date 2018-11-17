@@ -20,10 +20,10 @@ Function[usages,
 ] &, namespace];
 
 
-documentedLists = Keys[#] -> Values[#] /@ util`getGuideText[util`toCamel[Keys[#]]] & /@ {
-	"listing_of_named_characters" -> (StringTake[#, {3, -2}]&) @* util`getAtomic[{1, 1, -1, 1}],
-	"listing_of_supported_external_services" -> util`getAtomic[{1, 1, 1, 1, 1, 1, 1, 1, 1}],
-	"listing_of_all_formats" -> util`getAtomic[{1, 1, 1, 1, 1, 1, 1, 1, 1}]
+documentedLists = Keys[#] -> Values[#] /@ util`getGuideText["ListingOf" <> util`toCamel[Keys[#]]] & /@ {
+	"named_characters" -> (StringTake[#, {3, -2}]&) @* util`getAtomic[{1, 1, -1, 1}],
+	"supported_external_services" -> (StringTake[#, {2, -2}]&) @* util`getAtomic[{1, 1, 1, 1, 1, 1, 1, 1, 1}],
+	"all_formats" -> (StringTake[#, {2, -2}]&) @* util`getAtomic[{1, 1, 1, 1, 1, 1, 1, 1, 1}]
 };
 
 
